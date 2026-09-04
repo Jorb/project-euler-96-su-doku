@@ -2,6 +2,8 @@
 My attempt at solving the project Euler Su Doku problem: https://projecteuler.net/problem=96
 
 # My Method
+First pass, I am going to try to write it by hand. I have never really played SuDoku so I want to use this exercise to help myself understand the game better.
+
 1. Looked up basic SuDoku algorithms: https://en.wikipedia.org/wiki/Sudoku_solving_algorithms
 - Decided on brute force search for simplicity
 2. Chose C# .NET Console app to implement.
