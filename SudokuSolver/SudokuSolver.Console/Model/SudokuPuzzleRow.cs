@@ -1,5 +1,6 @@
-﻿using SudokuSolver.Console.Helper;
-using System.Runtime.CompilerServices;
+﻿// <copyright file="SudokuPuzzleRow.cs" company="Joe Braught">
+// Copyright (c) Joe Braught. All rights reserved.
+// </copyright>
 
 internal class SudokuPuzzleRow : SudokuCellCollection
 {

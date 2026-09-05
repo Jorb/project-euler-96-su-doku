@@ -1,4 +1,8 @@
-﻿using SudokuSolver.Console.Const;
+﻿// <copyright file="SudokuPuzzleCell.cs" company="Joe Braught">
+// Copyright (c) Joe Braught. All rights reserved.
+// </copyright>
+
+using SudokuSolver.Console.Const;
 
 internal class SudokuPuzzleCell
 {

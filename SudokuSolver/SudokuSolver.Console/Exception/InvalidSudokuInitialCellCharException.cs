@@ -1,4 +1,8 @@
-﻿[Serializable]
+﻿// <copyright file="InvalidSudokuInitialCellCharException.cs" company="Joe Braught">
+// Copyright (c) Joe Braught. All rights reserved.
+// </copyright>
+
+[Serializable]
 internal class InvalidSudokuInitialCellCharException : Exception
 {
     private char cellValue;

@@ -1,4 +1,8 @@
-﻿[Serializable]
+﻿// <copyright file="InvalidSudokuCellValueException.cs" company="Joe Braught">
+// Copyright (c) Joe Braught. All rights reserved.
+// </copyright>
+
+[Serializable]
 internal class InvalidSudokuCellValueException : Exception
 {
     private int cellInt;

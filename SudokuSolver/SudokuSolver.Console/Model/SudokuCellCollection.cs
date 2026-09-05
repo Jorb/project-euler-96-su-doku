@@ -1,4 +1,8 @@
-﻿using SudokuSolver.Console.Helper;
+﻿// <copyright file="SudokuCellCollection.cs" company="Joe Braught">
+// Copyright (c) Joe Braught. All rights reserved.
+// </copyright>
+
+using SudokuSolver.Console.Helper;
 
 internal class SudokuCellCollection
 {

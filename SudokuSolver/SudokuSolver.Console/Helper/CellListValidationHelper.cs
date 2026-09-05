@@ -1,7 +1,8 @@
-﻿using SudokuSolver.Console.Const;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿// <copyright file="CellListValidationHelper.cs" company="Joe Braught">
+// Copyright (c) Joe Braught. All rights reserved.
+// </copyright>
+
+using SudokuSolver.Console.Const;
 
 namespace SudokuSolver.Console.Helper
 {
@@ -38,7 +39,6 @@ namespace SudokuSolver.Console.Helper
             }
 
             return valid;
-
         }
     }
 }

@@ -1,4 +1,8 @@
-﻿using SudokuSolver.Console.Const;
+﻿// <copyright file="BackTrackingSudokuPuzzleSolver.cs" company="Joe Braught">
+// Copyright (c) Joe Braught. All rights reserved.
+// </copyright>
+
+using SudokuSolver.Console.Const;
 using SudokuSolver.Console.Helper;
 
 internal class BackTrackingSudokuPuzzleSolver : ISudokuPuzzleSolver
@@ -32,6 +36,7 @@ internal class BackTrackingSudokuPuzzleSolver : ISudokuPuzzleSolver
                     cell.CurrentValue = SudokuConstants.MinValue;
                     currentCellState = CurrentCellStateEnum.Initialized;
                 }
+
                 //PrintPuzzle(puzzle);
             }
 
@@ -54,7 +59,6 @@ internal class BackTrackingSudokuPuzzleSolver : ISudokuPuzzleSolver
                     // Increment this cell again.
                     i--;
                 }
-
             }
             else if(!cell.IsSettable && currentCellState == CurrentCellStateEnum.Overflowed)
             {
@@ -149,7 +153,6 @@ internal class BackTrackingSudokuPuzzleSolver : ISudokuPuzzleSolver
     {
         for (int puzzleIndex = 0; puzzleIndex < puzzleList.Count; puzzleIndex++)
         {
-            Console.Clear();
             Console.Write($"Solving puzzle {puzzleIndex+1}...");
             SolvePuzzle(puzzleList[puzzleIndex]);
             Console.WriteLine("SOLVED");

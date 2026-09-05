@@ -1,4 +1,8 @@
-﻿using SudokuSolver.Console.Helper;
+﻿// <copyright file="SudokuPuzzleFactory.cs" company="Joe Braught">
+// Copyright (c) Joe Braught. All rights reserved.
+// </copyright>
+
+using SudokuSolver.Console.Helper;
 
 internal class SudokuPuzzleFactory : ISudokuPuzzleFactory
 {
@@ -27,8 +31,10 @@ internal class SudokuPuzzleFactory : ISudokuPuzzleFactory
             {
                 puzzleLines.Add(rawsudokuLines[j]);
             }
+
             sudokuPuzzleList.Add(new SudokuPuzzle(puzzleLines));
         }
+
         ValidatePuzzlesAgainstFile(sudokuPuzzleList, rawsudokuLines);
         return sudokuPuzzleList;
     }
@@ -80,7 +86,6 @@ internal class SudokuPuzzleFactory : ISudokuPuzzleFactory
                 throw new InMemorySudokuPuzzlesDontMatchFileException();
             }
         }
-
     }
 
     //private static void BuildFileLinesFromPuzzleRows(List<string> fileLinesFromRows, int puzzleCount, SudokuPuzzle puzzle)

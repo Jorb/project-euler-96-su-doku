@@ -1,6 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿// <copyright file="PuzzleToStringListHelper.cs" company="Joe Braught">
+// Copyright (c) Joe Braught. All rights reserved.
+// </copyright>
+
 using SudokuSolver.Console.Const;
 
 namespace SudokuSolver.Console.Helper
@@ -18,8 +19,10 @@ namespace SudokuSolver.Console.Helper
                 {
                     rowString += ConvertCellToFileStringValue(cell);
                 }
+
                 fileLinesFromRows.Add(rowString);
             }
+
             return fileLinesFromRows;
         }
 
@@ -35,8 +38,8 @@ namespace SudokuSolver.Console.Helper
                 {
                     rowString += ConvertCellToFileStringValue(column.Cells[yIndex]);
                 }
-                fileLinesFromColumns.Add(rowString);
 
+                fileLinesFromColumns.Add(rowString);
             }
 
             return fileLinesFromColumns;
@@ -68,8 +71,8 @@ namespace SudokuSolver.Console.Helper
 
                 fileLinesFromBoxes.Add(newFileLine);
             }
-            return fileLinesFromBoxes;
 
+            return fileLinesFromBoxes;
         }
 
         private static string CreateGridTitle(int puzzleNumber)

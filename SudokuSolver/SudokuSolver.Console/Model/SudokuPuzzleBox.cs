@@ -1,5 +1,8 @@
-﻿using SudokuSolver.Console.Const;
-using SudokuSolver.Console.Helper;
+﻿// <copyright file="SudokuPuzzleBox.cs" company="Joe Braught">
+// Copyright (c) Joe Braught. All rights reserved.
+// </copyright>
+
+using SudokuSolver.Console.Const;
 
 internal class SudokuPuzzleBox : SudokuCellCollection
 {
@@ -11,6 +14,7 @@ internal class SudokuPuzzleBox : SudokuCellCollection
             cell.AssignParentBox(this);
             Cells.Add(cell);
         }
+
         BoxColumn = boxColumn;
         BoxRow = boxRow;
     }

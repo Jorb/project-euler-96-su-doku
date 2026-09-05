@@ -1,4 +1,8 @@
-﻿[Serializable]
+﻿// <copyright file="CellParentsNotInitializedException.cs" company="Joe Braught">
+// Copyright (c) Joe Braught. All rights reserved.
+// </copyright>
+
+[Serializable]
 internal class CellParentsNotInitializedException : Exception
 {
     public CellParentsNotInitializedException()

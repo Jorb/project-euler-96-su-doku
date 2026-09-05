@@ -1,4 +1,8 @@
-﻿using SudokuSolver.Console.Const;
+﻿// <copyright file="SudokuPuzzle.cs" company="Joe Braught">
+// Copyright (c) Joe Braught. All rights reserved.
+// </copyright>
+
+using SudokuSolver.Console.Const;
 
 internal class SudokuPuzzle : ISudokuPuzzle
 {
@@ -35,6 +39,7 @@ internal class SudokuPuzzle : ISudokuPuzzle
             {
                 columnCells.Add(row.Cells[xIndex]);
             }
+
             Columns.Add(new SudokuPuzzleColumn(columnCells, xIndex));
         }
 

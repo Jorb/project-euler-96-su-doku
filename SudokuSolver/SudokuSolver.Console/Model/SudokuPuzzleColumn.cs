@@ -1,4 +1,6 @@
-﻿using SudokuSolver.Console.Helper;
+﻿// <copyright file="SudokuPuzzleColumn.cs" company="Joe Braught">
+// Copyright (c) Joe Braught. All rights reserved.
+// </copyright>
 
 internal class SudokuPuzzleColumn : SudokuCellCollection
 {
