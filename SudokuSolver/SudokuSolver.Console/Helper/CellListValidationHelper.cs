@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SudokuSolver.Console
+namespace SudokuSolver.Console.Helper
 {
     internal static class CellListValidationHelper
     {

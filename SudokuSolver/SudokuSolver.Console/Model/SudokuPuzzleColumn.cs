@@ -1,4 +1,4 @@
-﻿using SudokuSolver.Console;
+﻿using SudokuSolver.Console.Helper;
 
 internal class SudokuPuzzleColumn
 {
