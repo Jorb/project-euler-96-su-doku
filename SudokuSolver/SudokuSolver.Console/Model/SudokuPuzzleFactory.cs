@@ -51,6 +51,9 @@ internal class SudokuPuzzleFactory : ISudokuPuzzleFactory
             //Convert the puzzle back into the file format using the columns objects
             fileLinesFromColumns.AddRange(PuzzleToStringListHelper.BuildFileLinesFromPuzzleColumns(puzzleCount, puzzle));
 
+            //Convert the puzzle back into the file format using the box objects
+            fileLinesFromColumns.AddRange(PuzzleToStringListHelper.BuildFileLinesFromPuzzleBoxes(puzzleCount, puzzle));
+
             puzzleCount++;
         }
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SudokuSolver.Console.Const;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -25,8 +26,7 @@ namespace SudokuSolver.Console.Helper
         internal static bool AreCellsValid(List<SudokuPuzzleCell> cells)
         {
             var valid = true;
-            // I should probably put the valid numbers array somewhere else, but the cell is the source of truth.
-            foreach (var validNumber in cells[0].ValidNumbers)
+            for (int validNumber = SudokuConstants.MinValue; validNumber <= SudokuConstants.MaxValue; validNumber++)
             {
                 //Check if any numbers are duplicated.
                 var duplicates = cells.Where(cell => cell.CurrentValue == validNumber).ToList();

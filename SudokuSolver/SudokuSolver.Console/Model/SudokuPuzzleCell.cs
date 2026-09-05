@@ -1,4 +1,6 @@
-﻿internal class SudokuPuzzleCell
+﻿using SudokuSolver.Console.Const;
+
+internal class SudokuPuzzleCell
 {
     /// <summary>
     /// 1-9 is valid. Null signifies empty.
@@ -25,8 +27,6 @@
     /// If a value has been set in this cell.
     /// </summary>
     public bool IsSet { get => CurrentValue is not null; }
-
-    public List<int> ValidNumbers = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 
     public void ClearValue()
     {
@@ -90,12 +90,12 @@
         }
     }
 
-    private static void CheckValueValidity(int? cellInt)
+    private static void CheckValueValidity(int? cellValue)
     { 
         // Don't allow nulls to be set after init. Call ClearValue if the cell needs to be cleared.
-        if (cellInt is null || cellInt < 1 || cellInt > 9)
+        if (cellValue is null || cellValue < SudokuConstants.MinValue || cellValue > SudokuConstants.MaxValue)
         {
-            throw new InvalidSudokuCellValueException(cellInt);
+            throw new InvalidSudokuCellValueException(cellValue);
         }
     }
 

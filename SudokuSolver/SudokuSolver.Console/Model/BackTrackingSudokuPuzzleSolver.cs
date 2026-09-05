@@ -1,4 +1,6 @@
-﻿internal class BackTrackingSudokuPuzzleSolver : ISudokuPuzzleSolver
+﻿using SudokuSolver.Console.Const;
+
+internal class BackTrackingSudokuPuzzleSolver : ISudokuPuzzleSolver
 {
     public void SolvePuzzle(SudokuPuzzle puzzle)
     {
@@ -6,7 +8,7 @@
         for (int rowIndex = 0; rowIndex < puzzle.Rows.Count; rowIndex++)
         {
             var row = puzzle.Rows[rowIndex];
-            for (int cellIndex = 0; cellIndex < 9; cellIndex++)
+            for (int cellIndex = 0; cellIndex < SudokuConstants.MaxValue; cellIndex++)
             {
                 var cell = row.Cells[cellIndex];
                 var currentCellState = CurrentCellStateEnum.Unknown;
@@ -14,7 +16,7 @@
                 {
                     if (cell.IsSet)
                     {
-                        if (cell.CurrentValue == 9)
+                        if (cell.CurrentValue == SudokuConstants.MaxValue)
                         {
                             //Clear the value and go back to the previous sibling;
                             cell.ClearValue();
@@ -30,7 +32,7 @@
                     else
                     {
                         //Init to 1 if never set.
-                        cell.CurrentValue = 1;
+                        cell.CurrentValue = SudokuConstants.MinValue;
                         currentCellState = CurrentCellStateEnum.Initialized;
                     }
                 }

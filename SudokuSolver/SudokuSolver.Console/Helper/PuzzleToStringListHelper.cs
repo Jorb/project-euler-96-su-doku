@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using SudokuSolver.Console.Const;
 
 namespace SudokuSolver.Console.Helper
 {
@@ -33,7 +34,7 @@ namespace SudokuSolver.Console.Helper
         {
             var fileLinesFromColumns = new List<string>();
             fileLinesFromColumns.Add($"Grid {puzzleCount.ToString("D2")}");
-            for (int yIndex = 0; yIndex < 9; yIndex++)
+            for (int yIndex = 0; yIndex < SudokuConstants.MaxValue; yIndex++)
             {
                 string rowString = "";
 
@@ -54,6 +55,12 @@ namespace SudokuSolver.Console.Helper
             }
 
             return fileLinesFromColumns;
+        }
+
+        internal static List<string> BuildFileLinesFromPuzzleBoxes(int puzzleCount, SudokuPuzzle puzzle)
+        {
+            //Finish this implementation so we can validate the box generation.
+            return new List<string>();
         }
     }
 }

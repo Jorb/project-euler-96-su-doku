@@ -1,4 +1,6 @@
-﻿internal class SudokuPuzzle : ISudokuPuzzle
+﻿using SudokuSolver.Console.Const;
+
+internal class SudokuPuzzle : ISudokuPuzzle
 {
     public List<SudokuPuzzleRow> Rows;
     public List<SudokuPuzzleColumn> Columns;
@@ -22,7 +24,7 @@
         }
 
         // Link the rows to columns
-        for (int xIndex = 0; xIndex < 9; xIndex++)
+        for (int xIndex = 0; xIndex < SudokuConstants.MaxValue; xIndex++)
         {
             var columnCells = new List<SudokuPuzzleCell>();
             foreach (var row in Rows)
