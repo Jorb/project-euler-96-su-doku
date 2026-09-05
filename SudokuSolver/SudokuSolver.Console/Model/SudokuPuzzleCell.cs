@@ -8,10 +8,9 @@ internal class SudokuPuzzleCell
     private int? initialValue = null;
     private int? currentValue = null;
 
-    private SudokuPuzzleRow parentRow = null;
-
-    private SudokuPuzzleColumn parentColumn = null;
-    private SudokuPuzzleBox parentBox = null;
+    public SudokuPuzzleRow ParentRow { get; private set; }
+    public SudokuPuzzleColumn ParentColumn { get; private set; }
+    public SudokuPuzzleBox ParentBox { get; private set; }
 
     /// <summary>
     /// The current value of the cell.
@@ -59,22 +58,15 @@ internal class SudokuPuzzleCell
     /// </summary>
     private void ThrowIfNotInitialized()
     {
-        if(parentRow is null || parentColumn is null || parentBox is null)
+        if(ParentRow is null || ParentColumn is null || ParentBox is null)
         {
             throw new CellParentsNotInitializedException();
         }
     }
 
-    //protected virtual void OnCellValueChanged(SudokuCellValueChangedEventArgs e)
-    //{
-    //    CellValueChanged?.Invoke(this, e);
-    //}
-
-    //public event EventHandler? CellValueChanged;
-
     public SudokuPuzzleCell(int cellInt, SudokuPuzzleRow sudokuPuzzleRow)
     {
-        parentRow = sudokuPuzzleRow;
+        ParentRow = sudokuPuzzleRow;
         SetInitialValue(cellInt);
     }
 
@@ -102,16 +94,30 @@ internal class SudokuPuzzleCell
     internal bool IsSetAndValid()
     {
         // Check against the parent row, column and box for validity.
-        return IsSet && parentRow.IsValid && parentColumn.IsValid && parentBox.IsValid;
+        return IsSet && ParentRow.IsValid && ParentColumn.IsValid && ParentBox.IsValid;
     }
 
     internal void AssignParentColumn(SudokuPuzzleColumn parentColumn)
     {
-        this.parentColumn = parentColumn;
+        if (this.ParentColumn is null)
+        {
+            this.ParentColumn = parentColumn;
+        }
+        else
+        {
+            throw new CellParentColumnAlreadyAssignedException();
+        }
     }
 
     internal void AssignParentBox(SudokuPuzzleBox parentBox)
     {
-        this.parentBox = parentBox;
+        if (this.ParentBox is null)
+        {
+            this.ParentBox = parentBox;
+        }
+        else
+        {
+            throw new CellParentBoxAlreadyAssignedException();
+        }
     }
 }

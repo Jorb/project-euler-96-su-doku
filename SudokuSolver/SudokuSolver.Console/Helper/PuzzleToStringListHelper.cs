@@ -10,20 +10,13 @@ namespace SudokuSolver.Console.Helper
         internal static List<string> BuildFileLinesFromPuzzleRows(int puzzleCount, SudokuPuzzle puzzle)
         {
             var fileLinesFromRows = new List<string>();
-            fileLinesFromRows.Add($"Grid {puzzleCount.ToString("D2")}");
+            fileLinesFromRows.Add(CreateGridTitle(puzzleCount));
             foreach (var row in puzzle.Rows)
             {
                 string rowString = "";
                 foreach (var cell in row.Cells)
                 {
-                    if (cell.CurrentValue is not null)
-                    {
-                        rowString += cell.CurrentValue.ToString();
-                    }
-                    else
-                    {
-                        rowString += "0";
-                    }
+                    rowString += ConvertCellToFileStringValue(cell);
                 }
                 fileLinesFromRows.Add(rowString);
             }
@@ -33,22 +26,14 @@ namespace SudokuSolver.Console.Helper
         internal static List<string> BuildFileLinesFromPuzzleColumns(int puzzleCount, SudokuPuzzle puzzle)
         {
             var fileLinesFromColumns = new List<string>();
-            fileLinesFromColumns.Add($"Grid {puzzleCount.ToString("D2")}");
+            fileLinesFromColumns.Add(CreateGridTitle(puzzleCount));
             for (int yIndex = 0; yIndex < SudokuConstants.MaxValue; yIndex++)
             {
                 string rowString = "";
 
                 foreach (var column in puzzle.Columns)
                 {
-
-                    if (column.Cells[yIndex].CurrentValue is not null)
-                    {
-                        rowString += column.Cells[yIndex].CurrentValue.ToString();
-                    }
-                    else
-                    {
-                        rowString += "0";
-                    }
+                    rowString += ConvertCellToFileStringValue(column.Cells[yIndex]);
                 }
                 fileLinesFromColumns.Add(rowString);
 
@@ -59,8 +44,55 @@ namespace SudokuSolver.Console.Helper
 
         internal static List<string> BuildFileLinesFromPuzzleBoxes(int puzzleCount, SudokuPuzzle puzzle)
         {
-            //Finish this implementation so we can validate the box generation.
-            return new List<string>();
+            var fileLinesFromBoxes = new List<string>();
+            fileLinesFromBoxes.Add(CreateGridTitle(puzzleCount));
+
+            for (int puzzleRow = 0; puzzleRow < SudokuConstants.MaxValue; puzzleRow++)
+                {
+                string newFileLine = "";
+
+                // Iterate the columns and get the associated box value.
+                for (int puzzleColumn = 0; puzzleColumn < SudokuConstants.MaxValue; puzzleColumn+= SudokuConstants.BoxInnerColumns)
+                {
+                    var currentBox = puzzle.GetBoxFromRawCellCoordinates(puzzleRow, puzzleColumn);
+
+                    var innerBoxRow = puzzleRow % SudokuConstants.BoxColumnsPerPuzzle;
+
+                    // Boxes have 3 rows inside. Get the inner row.
+                    var currentBoxRowValues = currentBox.GetRowValues(innerBoxRow);
+                    foreach (var cell in currentBoxRowValues)
+                    {
+                        newFileLine += ConvertCellToFileStringValue(cell);
+                    }
+                }
+
+                fileLinesFromBoxes.Add(newFileLine);
+            }
+            return fileLinesFromBoxes;
+
+        }
+
+        private static string CreateGridTitle(int puzzleNumber)
+        {
+            return $"Grid {puzzleNumber.ToString("D2")}";
+        }
+
+        /// <summary>
+        /// Converts a cell to it's string value for storing in the file.
+        /// </summary>
+        /// <param name="cell">The cell to get a value from.</param>
+        /// <returns></returns>
+        private static string ConvertCellToFileStringValue(SudokuPuzzleCell cell)
+        {
+            if (cell.CurrentValue is null)
+            {
+                // The file uses 0 to signify unassigned values cells. My logic uses null.
+                return SudokuConstants.FileEmptyCell;
+            }
+            else
+            {
+                return cell.CurrentValue.ToString();
+            }
         }
     }
 }

@@ -2,12 +2,16 @@
 
 internal class SudokuPuzzleColumn : SudokuCellCollection
 {
-    public int PositionX { get; }
+    /// <summary>
+    /// Index of the column in the puzzle.
+    /// 0 is left most column, 9 is rightmost.
+    /// </summary>
+    public int Index { get; }
 
     public SudokuPuzzleColumn(List<SudokuPuzzleCell> cells, int positionX)
     {
         Cells = new List<SudokuPuzzleCell>();
-        this.PositionX = positionX;
+        this.Index = positionX;
         foreach (var cell in cells)
         {
             cell.AssignParentColumn(this);

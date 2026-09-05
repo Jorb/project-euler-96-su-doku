@@ -1,8 +1,9 @@
-﻿using SudokuSolver.Console.Helper;
+﻿using SudokuSolver.Console.Const;
+using SudokuSolver.Console.Helper;
 
 internal class SudokuPuzzleBox : SudokuCellCollection
 {
-    public SudokuPuzzleBox(List<SudokuPuzzleCell> cells, int positionX, int positionY)
+    public SudokuPuzzleBox(List<SudokuPuzzleCell> cells, int boxColumn, int boxRow)
     {
         Cells = new List<SudokuPuzzleCell>();
         foreach(var cell in cells)
@@ -10,9 +11,44 @@ internal class SudokuPuzzleBox : SudokuCellCollection
             cell.AssignParentBox(this);
             Cells.Add(cell);
         }
-        PositionX = positionX;
-        PositionY = positionY;
+        BoxColumn = boxColumn;
+        BoxRow = boxRow;
     }
-    public int PositionX { get; }
-    public int PositionY { get; }
+
+    public SudokuPuzzleBox(int boxColumn, int boxRow)
+    {
+        Cells = new List<SudokuPuzzleCell>();
+        BoxColumn = boxColumn;
+        BoxRow = boxRow;
+    }
+
+    /// <summary>
+    /// Index of the box column (0 to 2 since there are 3 columns of boxes per puzzle)
+    /// </summary>
+    public int BoxColumn { get; }
+
+    /// <summary>
+    /// Index of the box row (0 to 2 since there are 3 rows of boxes per puzzle)
+    /// </summary>
+    public int BoxRow { get; }
+
+    internal List<SudokuPuzzleCell> GetRowValues(int innerBoxRow)
+    {
+        var rowCells = new List<SudokuPuzzleCell>();
+        // Cells are not stored in columns and rows in this object. We have to derive that.
+        int startCell = innerBoxRow * SudokuConstants.BoxInnerRows;
+
+        for (int cellIndex = startCell; cellIndex < startCell + SudokuConstants.BoxInnerRows; cellIndex++)
+        {
+            rowCells.Add(Cells[cellIndex]);
+        }
+
+        return rowCells;
+    }
+
+    internal void AppendCell(SudokuPuzzleCell cell)
+    {
+        cell.AssignParentBox(this);
+        Cells.Add(cell);
+    }
 }

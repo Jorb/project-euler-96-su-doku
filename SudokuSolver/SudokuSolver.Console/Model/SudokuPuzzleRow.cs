@@ -5,19 +5,20 @@ internal class SudokuPuzzleRow : SudokuCellCollection
 {
 
     /// <summary>
-    /// The Y position of the row.
+    /// The index of the row in the puzzle.
+    /// 0 is top row, 9 is bottom row.
     /// </summary>
-    public int PositionY;
+    public int Index { get; }
 
     /// <summary>
     /// Build an instance of a row from a string.
     /// </summary>
     /// <param name="line">Line of integers read from file.</param>
     /// <exception cref="InvalidSudokuInitialCellCharException"></exception>
-    public SudokuPuzzleRow(string line, int positionY)
+    public SudokuPuzzleRow(string line, int index)
     {
         Cells = new List<SudokuPuzzleCell>();
-        PositionY = positionY;
+        Index = index;
 
         foreach (char cellValue in line.ToCharArray())
         {

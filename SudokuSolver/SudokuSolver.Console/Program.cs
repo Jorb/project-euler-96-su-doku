@@ -3,10 +3,18 @@ using Microsoft.Extensions.Hosting;
 
 Console.WriteLine("Starting Sudoku Solver");
 
-ISudokuPuzzleFactory puzzleFactory = new SudokuPuzzleFactory("sudoku.txt");
-List<SudokuPuzzle> puzzleList = puzzleFactory.BuildPuzzleList();
+Console.WriteLine("Reading puzzle file");
+var puzzleFactory = new SudokuPuzzleFactory("sudoku.txt");
+
+Console.WriteLine("Building puzzle objects");
+var puzzleList = puzzleFactory.BuildPuzzleList();
 
 ISudokuPuzzleSolver puzzleSolver = new BackTrackingSudokuPuzzleSolver();
 
+Console.WriteLine("Solving puzzles");
 puzzleSolver.SolvePuzzles(puzzleList);
 
+var puzzlePrinter = new SudokuPuzzlePrinter();
+
+Console.WriteLine("Writing solved puzzles to file");
+puzzlePrinter.PrintPuzzlesToFile(puzzleList, "sudokuSolved.txt");

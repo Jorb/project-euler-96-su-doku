@@ -5,6 +5,7 @@ internal class SudokuPuzzle : ISudokuPuzzle
     public List<SudokuPuzzleRow> Rows;
     public List<SudokuPuzzleColumn> Columns;
     public List<SudokuPuzzleBox> Boxes;
+    public List<SudokuPuzzleCell> Cells { get; internal set; }
 
     /// <summary>
     /// Build a sudoku puzzle object from raw string lines.
@@ -15,12 +16,15 @@ internal class SudokuPuzzle : ISudokuPuzzle
         Rows = new List<SudokuPuzzleRow>();
         Columns = new List<SudokuPuzzleColumn>();
         Boxes = new List<SudokuPuzzleBox>();
+        Cells = new List<SudokuPuzzleCell>();
 
-        // Start by creating all the rows
+        // Start by creating all the rows. Rows are the source of truth.
         for (int positionY = 0; positionY < puzzleLines.Count; positionY++)
         {
             string line = puzzleLines[positionY];
-            Rows.Add(new SudokuPuzzleRow(line, positionY));
+            var newRow = new SudokuPuzzleRow(line, positionY);
+            Rows.Add(newRow);
+            Cells.AddRange(newRow.Cells);
         }
 
         // Link the rows to columns
@@ -34,23 +38,42 @@ internal class SudokuPuzzle : ISudokuPuzzle
             Columns.Add(new SudokuPuzzleColumn(columnCells, xIndex));
         }
 
-        int boxWidth = 3;
+
+
         // Link the rows and columns to boxes
-        for (int boxXIndex = 0; boxXIndex < 3; boxXIndex++)
+        //Build the box objects.
+        for(int boxIndex = 0; boxIndex < SudokuConstants.BoxRowsPerPuzzle * SudokuConstants.BoxColumnsPerPuzzle; boxIndex++)
         {
-            for (int boxYIndex = 0; boxYIndex < 3; boxYIndex++)
+            int columnIndex = boxIndex / 3;
+            int rowIndex = boxIndex % 3;
+            Boxes.Add(new SudokuPuzzleBox(columnIndex, rowIndex));
+        }
+
+        foreach(var row in Rows)
+        {
+            foreach (var cell in row.Cells)
             {
-                var boxCells = new List<SudokuPuzzleCell>();
-                for (int rowIndex = boxXIndex * 3; rowIndex < boxXIndex * 3 + 3; rowIndex++)
-                {
-                    for(int columnIndex = boxYIndex * 3; columnIndex < boxYIndex * 3 + 3; columnIndex++)
-                    {
-                        boxCells.Add(Rows[rowIndex].Cells[columnIndex]);
-                    }
-                }
-                Boxes.Add(new SudokuPuzzleBox(boxCells, boxXIndex, boxYIndex));
+                AddCellToCorrespondingBox(cell);
             }
         }
     }
 
+    private void AddCellToCorrespondingBox(SudokuPuzzleCell cell)
+    {
+        var boxRow = cell.ParentRow.Index/SudokuConstants.BoxRowsPerPuzzle;
+        var boxColumn = cell.ParentColumn.Index/SudokuConstants.BoxColumnsPerPuzzle;
+        GetBox(boxColumn, boxRow).AppendCell(cell);
+    }
+
+    internal SudokuPuzzleBox GetBox(int boxColumn, int boxRow)
+    {
+        return Boxes.Single(box => box.BoxColumn == boxColumn && box.BoxRow == boxRow);
+    }
+
+    internal SudokuPuzzleBox GetBoxFromRawCellCoordinates(int puzzleRow, int puzzleColumn)
+    {
+        var boxRow = puzzleRow/ SudokuConstants.BoxRowsPerPuzzle;
+        var boxColumn = puzzleColumn/SudokuConstants.BoxColumnsPerPuzzle;
+        return GetBox(boxColumn, boxRow);
+    }
 }

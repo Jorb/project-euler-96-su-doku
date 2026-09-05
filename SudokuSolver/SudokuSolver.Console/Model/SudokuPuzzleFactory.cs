@@ -42,6 +42,8 @@ internal class SudokuPuzzleFactory : ISudokuPuzzleFactory
     {
         List<string> fileLinesFromRows = new List<string>();
         List<string> fileLinesFromColumns = new List<string>();
+        List<string> fileLinesFromBoxes = new List<string>();
+
         var puzzleCount = 1;
         foreach (var puzzle in puzzleList)
         {
@@ -52,7 +54,7 @@ internal class SudokuPuzzleFactory : ISudokuPuzzleFactory
             fileLinesFromColumns.AddRange(PuzzleToStringListHelper.BuildFileLinesFromPuzzleColumns(puzzleCount, puzzle));
 
             //Convert the puzzle back into the file format using the box objects
-            fileLinesFromColumns.AddRange(PuzzleToStringListHelper.BuildFileLinesFromPuzzleBoxes(puzzleCount, puzzle));
+            fileLinesFromBoxes.AddRange(PuzzleToStringListHelper.BuildFileLinesFromPuzzleBoxes(puzzleCount, puzzle));
 
             puzzleCount++;
         }
@@ -68,6 +70,12 @@ internal class SudokuPuzzleFactory : ISudokuPuzzleFactory
 
             // Validate Column construction.
             if (!fileLinesFromColumns[i].Equals(rawsudokuLines[i]))
+            {
+                throw new InMemorySudokuPuzzlesDontMatchFileException();
+            }
+
+            // Validate Box construction.
+            if (!fileLinesFromBoxes[i].Equals(rawsudokuLines[i]))
             {
                 throw new InMemorySudokuPuzzlesDontMatchFileException();
             }
