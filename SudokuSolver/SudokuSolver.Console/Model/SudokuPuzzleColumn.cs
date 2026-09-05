@@ -1,9 +1,7 @@
 ﻿using SudokuSolver.Console.Helper;
 
-internal class SudokuPuzzleColumn
+internal class SudokuPuzzleColumn : SudokuCellCollection
 {
-    public List<SudokuPuzzleCell> Cells;
-
     public int PositionX { get; }
 
     public SudokuPuzzleColumn(List<SudokuPuzzleCell> cells, int positionX)
@@ -15,12 +13,5 @@ internal class SudokuPuzzleColumn
             cell.AssignParentColumn(this);
             Cells.Add(cell);
         }
-    }
-
-    public bool IsValid { get => GetIsValid(); }
-
-    private bool GetIsValid()
-    {
-        return CellListValidationHelper.AreCellsValid(Cells);
     }
 }

@@ -12,49 +12,50 @@
                 var currentCellState = CurrentCellStateEnum.Unknown;
                 if (cell.IsSettable && cell.IsSet)
                 {
-                    if (cell.CurrentValue == 9)
+                    if (cell.IsSet)
                     {
-                        //Clear the value and go back to the previous sibling;
-                        cell.ClearValue();
-                        currentCellState = CurrentCellStateEnum.Overflowed;
+                        if (cell.CurrentValue == 9)
+                        {
+                            //Clear the value and go back to the previous sibling;
+                            cell.ClearValue();
+                            currentCellState = CurrentCellStateEnum.Overflowed;
+                        }
+                        else
+                        {
+                            // Increment if less than 9.
+                            cell.CurrentValue++;
+                            currentCellState = CurrentCellStateEnum.Incremented;
+                        }
                     }
                     else
                     {
-                        // Increment if less than 9.
-                        cell.CurrentValue++;
-                        currentCellState = CurrentCellStateEnum.Incremented;
+                        //Init to 1 if never set.
+                        cell.CurrentValue = 1;
+                        currentCellState = CurrentCellStateEnum.Initialized;
                     }
-                }
-                else
-                {
-                    //Init to 1 if never set.
-                    cell.CurrentValue = 1;
-                    currentCellState = CurrentCellStateEnum.Initialized;
                 }
 
                 if (!cell.IsSetAndValid())
                 {
-                    switch (currentCellState)
+
+                    if (currentCellState == CurrentCellStateEnum.Overflowed)
                     {
-                        case CurrentCellStateEnum.Overflowed:
-                            // Go back to the previous cell and increment it.
-                            cellIndex -= 2;
-                            break;
-                        case CurrentCellStateEnum.Incremented:
-                        case CurrentCellStateEnum.Initialized:
-                            // Increment this cell again.
-                            cellIndex--;
-                            break;
+                        // Go back to the previous cell and increment it.
+                        cellIndex -= 2;
 
+                        if (cellIndex < 0)
+                        {
+                            rowIndex -= 2;
+                        }
+                        break;
                     }
-                }
+                    else if (currentCellState == CurrentCellStateEnum.Incremented ||
+                        currentCellState == CurrentCellStateEnum.Initialized)
+                    {
+                        // Increment this cell again.
+                        cellIndex--;
+                    }
 
-
-                if (cellIndex < 0)
-                {
-                    //If all the values failed in this row, go up a row and backtrack further.
-                    rowIndex -= 2;
-                    break;
                 }
             }
         }

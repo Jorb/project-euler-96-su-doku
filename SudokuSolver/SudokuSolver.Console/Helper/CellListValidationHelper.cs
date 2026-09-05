@@ -29,7 +29,8 @@ namespace SudokuSolver.Console.Helper
             foreach (var validNumber in cells[0].ValidNumbers)
             {
                 //Check if any numbers are duplicated.
-                if (cells.GroupBy(cell => cell.CurrentValue == validNumber).Count() > 1)
+                var duplicates = cells.Where(cell => cell.CurrentValue == validNumber).ToList();
+                if (duplicates.Count() > 1)
                 {
                     valid = false;
                     break;

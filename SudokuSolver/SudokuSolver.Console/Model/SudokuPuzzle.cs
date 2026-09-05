@@ -38,15 +38,15 @@
         {
             for (int boxYIndex = 0; boxYIndex < 3; boxYIndex++)
             {
-                var boxCellCounter = 0;
                 var boxCells = new List<SudokuPuzzleCell>();
                 for (int rowIndex = boxXIndex * 3; rowIndex < boxXIndex * 3 + 3; rowIndex++)
                 {
                     for(int columnIndex = boxYIndex * 3; columnIndex < boxYIndex * 3 + 3; columnIndex++)
                     {
-                        boxCellCounter++;
+                        boxCells.Add(Rows[rowIndex].Cells[columnIndex]);
                     }
                 }
+                Boxes.Add(new SudokuPuzzleBox(boxCells, boxXIndex, boxYIndex));
             }
         }
     }

@@ -1,12 +1,8 @@
 ﻿using SudokuSolver.Console.Helper;
 using System.Runtime.CompilerServices;
 
-internal class SudokuPuzzleRow
+internal class SudokuPuzzleRow : SudokuCellCollection
 {
-    /// <summary>
-    /// The cells that make up the row.
-    /// </summary>
-    public List<SudokuPuzzleCell> Cells;
 
     /// <summary>
     /// The Y position of the row.
@@ -37,8 +33,4 @@ internal class SudokuPuzzleRow
             }
         }
     }
-
-    public bool IsComplete { get => CellListValidationHelper.AreCellsCompleted(Cells); }
-    public bool IsValid { get => CellListValidationHelper.AreCellsValid(Cells); }
-    public bool IsCompleteAndValid { get => IsComplete && IsValid; }
 }

@@ -39,16 +39,29 @@
 
     private void SetValue(int? value)
     {
+        ThrowIfNotInitialized();
+
         if (IsSettable)
         {
             CheckValueValidity(value);
 
-            CurrentValue = value;
+            currentValue = value;
         }
         else
         {
             // Be explicit, the solver should not be setting values it's not supposed to touch.
             throw new AttemptedToSetUnSettableRowException();
+        }
+    }
+
+    /// <summary>
+    /// Properly initialized cells must have all parents defined.
+    /// </summary>
+    private void ThrowIfNotInitialized()
+    {
+        if(parentRow is null || parentColumn is null || parentBox is null)
+        {
+            throw new CellParentsNotInitializedException();
         }
     }
 
@@ -95,5 +108,10 @@
     internal void AssignParentColumn(SudokuPuzzleColumn parentColumn)
     {
         this.parentColumn = parentColumn;
+    }
+
+    internal void AssignParentBox(SudokuPuzzleBox parentBox)
+    {
+        this.parentBox = parentBox;
     }
 }
