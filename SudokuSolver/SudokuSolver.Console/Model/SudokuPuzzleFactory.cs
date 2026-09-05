@@ -93,16 +93,16 @@
     private static void BuildFileLinesFromPuzzleColumns(List<string> fileLinesFromColumns, int puzzleCount, SudokuPuzzle puzzle)
     {
         fileLinesFromColumns.Add($"Grid {puzzleCount.ToString("D2")}");
-        for (int i = 0; i < 9; i++)
+        for (int yIndex = 0; yIndex < 9; yIndex++)
         {
             string rowString = "";
 
             foreach (var column in puzzle.Columns)
             {
 
-                if (column.Cells[i].CurrentValue is not null)
+                if (column.Cells[yIndex].CurrentValue is not null)
                 {
-                    rowString += column.Cells[i].CurrentValue.ToString();
+                    rowString += column.Cells[yIndex].CurrentValue.ToString();
                 }
                 else
                 {
@@ -112,5 +112,52 @@
             fileLinesFromColumns.Add(rowString);
 
         }
+    }
+
+
+    private static void BuildFileLinesFromPuzzleBoxes(List<string> fileLinesFromBoxes, int puzzleCount, SudokuPuzzle puzzle)
+    {
+        //fileLinesFromBoxes.Add($"Grid {puzzleCount.ToString("D2")}");
+        //int boxXIndex = 0;
+        //int boxYIndex = 0;
+        //foreach(var box in puzzle.Boxes)
+        //{
+        //    string boxRow0, boxRow1, boxRow2;
+
+        //    boxRow0 = ${ puzzle.Boxes[0].Cells }
+
+        //    boxXIndex++;
+        //    boxXIndex = boxXIndex % 3;
+        //    if(boxXIndex == 0)
+        //    {
+        //        boxYIndex++;
+        //    }
+        //}
+
+
+
+        //for (int yIndexBox = 0; yIndexBox < 3; yIndexBox++)
+        //{
+        //    string rowString = "";
+
+        //    for (int j = yIndexBox; j < yIndexBox + 3; j++)
+        //    {
+        //        var box = puzzle.Boxes[j];
+
+        //        for (int k = 0; k < 3; k++)
+        //        {
+        //            if (box.Cells[k].CurrentValue is not null)
+        //            {
+        //                rowString += column.Cells[yIndexBox].CurrentValue.ToString();
+        //            }
+        //            else
+        //            {
+        //                rowString += "0";
+        //            }
+        //        }
+        //    }
+        //    fileLinesFromBoxes.Add(rowString);
+
+        //}
     }
 }
