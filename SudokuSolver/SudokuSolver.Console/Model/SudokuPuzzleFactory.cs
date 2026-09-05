@@ -1,4 +1,6 @@
-﻿internal class SudokuPuzzleFactory : ISudokuPuzzleFactory
+﻿using SudokuSolver.Console.Helper;
+
+internal class SudokuPuzzleFactory : ISudokuPuzzleFactory
 {
     private string sudokuFilePath;
 
@@ -44,10 +46,11 @@
         foreach (var puzzle in puzzleList)
         {
             //Convert the puzzle back into the file format using the rows objects
-            BuildFileLinesFromPuzzleRows(fileLinesFromRows, puzzleCount, puzzle);
+            fileLinesFromRows.AddRange(PuzzleToStringListHelper.BuildFileLinesFromPuzzleRows(puzzleCount, puzzle));
 
             //Convert the puzzle back into the file format using the columns objects
-            BuildFileLinesFromPuzzleColumns(fileLinesFromColumns, puzzleCount, puzzle);
+            fileLinesFromColumns.AddRange(PuzzleToStringListHelper.BuildFileLinesFromPuzzleColumns(puzzleCount, puzzle));
+
             puzzleCount++;
         }
 
@@ -69,50 +72,50 @@
 
     }
 
-    private static void BuildFileLinesFromPuzzleRows(List<string> fileLinesFromRows, int puzzleCount, SudokuPuzzle puzzle)
-    {
-        fileLinesFromRows.Add($"Grid {puzzleCount.ToString("D2")}");
-        foreach (var row in puzzle.Rows)
-        {
-            string rowString = "";
-            foreach (var cell in row.Cells)
-            {
-                if (cell.CurrentValue is not null)
-                {
-                    rowString += cell.CurrentValue.ToString();
-                }
-                else
-                {
-                    rowString += "0";
-                }
-            }
-            fileLinesFromRows.Add(rowString);
-        }
-    }
+    //private static void BuildFileLinesFromPuzzleRows(List<string> fileLinesFromRows, int puzzleCount, SudokuPuzzle puzzle)
+    //{
+    //    fileLinesFromRows.Add($"Grid {puzzleCount.ToString("D2")}");
+    //    foreach (var row in puzzle.Rows)
+    //    {
+    //        string rowString = "";
+    //        foreach (var cell in row.Cells)
+    //        {
+    //            if (cell.CurrentValue is not null)
+    //            {
+    //                rowString += cell.CurrentValue.ToString();
+    //            }
+    //            else
+    //            {
+    //                rowString += "0";
+    //            }
+    //        }
+    //        fileLinesFromRows.Add(rowString);
+    //    }
+    //}
 
-    private static void BuildFileLinesFromPuzzleColumns(List<string> fileLinesFromColumns, int puzzleCount, SudokuPuzzle puzzle)
-    {
-        fileLinesFromColumns.Add($"Grid {puzzleCount.ToString("D2")}");
-        for (int yIndex = 0; yIndex < 9; yIndex++)
-        {
-            string rowString = "";
+    //private static void BuildFileLinesFromPuzzleColumns(List<string> fileLinesFromColumns, int puzzleCount, SudokuPuzzle puzzle)
+    //{
+    //    fileLinesFromColumns.Add($"Grid {puzzleCount.ToString("D2")}");
+    //    for (int yIndex = 0; yIndex < 9; yIndex++)
+    //    {
+    //        string rowString = "";
 
-            foreach (var column in puzzle.Columns)
-            {
+    //        foreach (var column in puzzle.Columns)
+    //        {
 
-                if (column.Cells[yIndex].CurrentValue is not null)
-                {
-                    rowString += column.Cells[yIndex].CurrentValue.ToString();
-                }
-                else
-                {
-                    rowString += "0";
-                }
-            }
-            fileLinesFromColumns.Add(rowString);
+    //            if (column.Cells[yIndex].CurrentValue is not null)
+    //            {
+    //                rowString += column.Cells[yIndex].CurrentValue.ToString();
+    //            }
+    //            else
+    //            {
+    //                rowString += "0";
+    //            }
+    //        }
+    //        fileLinesFromColumns.Add(rowString);
 
-        }
-    }
+    //    }
+    //}
 
 
     private static void BuildFileLinesFromPuzzleBoxes(List<string> fileLinesFromBoxes, int puzzleCount, SudokuPuzzle puzzle)
