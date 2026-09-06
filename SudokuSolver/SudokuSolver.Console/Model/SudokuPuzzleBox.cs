@@ -9,7 +9,7 @@ internal class SudokuPuzzleBox : SudokuCellCollection
     public SudokuPuzzleBox(List<SudokuPuzzleCell> cells, int boxColumn, int boxRow)
     {
         Cells = new List<SudokuPuzzleCell>();
-        foreach(var cell in cells)
+        foreach (var cell in cells)
         {
             cell.AssignParentBox(this);
             Cells.Add(cell);

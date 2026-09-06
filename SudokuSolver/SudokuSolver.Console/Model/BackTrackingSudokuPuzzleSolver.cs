@@ -48,7 +48,7 @@ internal class BackTrackingSudokuPuzzleSolver : ISudokuPuzzleSolver
                     // Go back to the previous cell and increment it.
                     i -= 2;
 
-                    if(i < -1)
+                    if (i < -1)
                     {
                         throw new OutsideOfPuzzleCellBoundsException();
                     }
@@ -60,7 +60,7 @@ internal class BackTrackingSudokuPuzzleSolver : ISudokuPuzzleSolver
                     i--;
                 }
             }
-            else if(!cell.IsSettable && currentCellState == CurrentCellStateEnum.Overflowed)
+            else if (!cell.IsSettable && currentCellState == CurrentCellStateEnum.Overflowed)
             {
                 // Go back to the previous cell and increment it.
                 i -= 2;
@@ -153,7 +153,7 @@ internal class BackTrackingSudokuPuzzleSolver : ISudokuPuzzleSolver
     {
         for (int puzzleIndex = 0; puzzleIndex < puzzleList.Count; puzzleIndex++)
         {
-            Console.Write($"Solving puzzle {puzzleIndex+1}...");
+            Console.Write($"Solving puzzle {puzzleIndex + 1}...");
             SolvePuzzle(puzzleList[puzzleIndex]);
             Console.WriteLine("SOLVED");
         }

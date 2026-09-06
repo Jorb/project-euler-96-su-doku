@@ -62,7 +62,7 @@ internal class SudokuPuzzleCell
     /// </summary>
     private void ThrowIfNotInitialized()
     {
-        if(ParentRow is null || ParentColumn is null || ParentBox is null)
+        if (ParentRow is null || ParentColumn is null || ParentBox is null)
         {
             throw new CellParentsNotInitializedException();
         }
@@ -87,7 +87,7 @@ internal class SudokuPuzzleCell
     }
 
     private static void CheckValueValidity(int? cellValue)
-    { 
+    {
         // Don't allow nulls to be set after init. Call ClearValue if the cell needs to be cleared.
         if (cellValue is null || cellValue < SudokuConstants.MinValue || cellValue > SudokuConstants.MaxValue)
         {

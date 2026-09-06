@@ -47,14 +47,14 @@ internal class SudokuPuzzle : ISudokuPuzzle
 
         // Link the rows and columns to boxes
         //Build the box objects.
-        for(int boxIndex = 0; boxIndex < SudokuConstants.BoxRowsPerPuzzle * SudokuConstants.BoxColumnsPerPuzzle; boxIndex++)
+        for (int boxIndex = 0; boxIndex < SudokuConstants.BoxRowsPerPuzzle * SudokuConstants.BoxColumnsPerPuzzle; boxIndex++)
         {
             int columnIndex = boxIndex / 3;
             int rowIndex = boxIndex % 3;
             Boxes.Add(new SudokuPuzzleBox(columnIndex, rowIndex));
         }
 
-        foreach(var row in Rows)
+        foreach (var row in Rows)
         {
             foreach (var cell in row.Cells)
             {
@@ -65,8 +65,8 @@ internal class SudokuPuzzle : ISudokuPuzzle
 
     private void AddCellToCorrespondingBox(SudokuPuzzleCell cell)
     {
-        var boxRow = cell.ParentRow.Index/SudokuConstants.BoxRowsPerPuzzle;
-        var boxColumn = cell.ParentColumn.Index/SudokuConstants.BoxColumnsPerPuzzle;
+        var boxRow = cell.ParentRow.Index / SudokuConstants.BoxRowsPerPuzzle;
+        var boxColumn = cell.ParentColumn.Index / SudokuConstants.BoxColumnsPerPuzzle;
         GetBox(boxColumn, boxRow).AppendCell(cell);
     }
 
@@ -77,8 +77,8 @@ internal class SudokuPuzzle : ISudokuPuzzle
 
     internal SudokuPuzzleBox GetBoxFromRawCellCoordinates(int puzzleRow, int puzzleColumn)
     {
-        var boxRow = puzzleRow/ SudokuConstants.BoxRowsPerPuzzle;
-        var boxColumn = puzzleColumn/SudokuConstants.BoxColumnsPerPuzzle;
+        var boxRow = puzzleRow / SudokuConstants.BoxRowsPerPuzzle;
+        var boxColumn = puzzleColumn / SudokuConstants.BoxColumnsPerPuzzle;
         return GetBox(boxColumn, boxRow);
     }
 }

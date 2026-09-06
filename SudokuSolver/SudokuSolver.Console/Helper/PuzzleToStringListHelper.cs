@@ -51,11 +51,11 @@ namespace SudokuSolver.Console.Helper
             fileLinesFromBoxes.Add(CreateGridTitle(puzzleCount));
 
             for (int puzzleRow = 0; puzzleRow < SudokuConstants.MaxValue; puzzleRow++)
-                {
+            {
                 string newFileLine = "";
 
                 // Iterate the columns and get the associated box value.
-                for (int puzzleColumn = 0; puzzleColumn < SudokuConstants.MaxValue; puzzleColumn+= SudokuConstants.BoxInnerColumns)
+                for (int puzzleColumn = 0; puzzleColumn < SudokuConstants.MaxValue; puzzleColumn += SudokuConstants.BoxInnerColumns)
                 {
                     var currentBox = puzzle.GetBoxFromRawCellCoordinates(puzzleRow, puzzleColumn);
 
