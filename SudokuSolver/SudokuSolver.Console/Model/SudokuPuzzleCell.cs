@@ -40,59 +40,10 @@ internal class SudokuPuzzleCell
         }
     }
 
-    private void SetValue(int? value)
-    {
-        this.ThrowIfNotInitialized();
-
-        if (this.IsSettable)
-        {
-            CheckValueValidity(value);
-
-            this.currentValue = value;
-        }
-        else
-        {
-            // Be explicit, the solver should not be setting values it's not supposed to touch.
-            throw new AttemptedToSetUnSettableRowException();
-        }
-    }
-
-    /// <summary>
-    /// Properly initialized cells must have all parents defined.
-    /// </summary>
-    private void ThrowIfNotInitialized()
-    {
-        if (this.ParentRow is null || this.ParentColumn is null || this.ParentBox is null)
-        {
-            throw new CellParentsNotInitializedException();
-        }
-    }
-
     public SudokuPuzzleCell(int cellInt, SudokuPuzzleRow sudokuPuzzleRow)
     {
         this.ParentRow = sudokuPuzzleRow;
         this.SetInitialValue(cellInt);
-    }
-
-    private void SetInitialValue(int cellInt)
-    {
-        // 0 is not a valid number, but it is used by the file to signify empty.
-        // Handle it early, use null from here on out.
-        if (cellInt != 0)
-        {
-            CheckValueValidity(cellInt);
-            this.initialValue = cellInt;
-            this.currentValue = cellInt;
-        }
-    }
-
-    private static void CheckValueValidity(int? cellValue)
-    {
-        // Don't allow nulls to be set after init. Call ClearValue if the cell needs to be cleared.
-        if (cellValue is null || cellValue < SudokuConstants.MinValue || cellValue > SudokuConstants.MaxValue)
-        {
-            throw new InvalidSudokuCellValueException(cellValue);
-        }
     }
 
     internal bool IsSetAndValid()
@@ -122,6 +73,54 @@ internal class SudokuPuzzleCell
         else
         {
             throw new CellParentBoxAlreadyAssignedException();
+        }
+    }
+
+    private void SetValue(int? value)
+    {
+        this.ThrowIfNotInitialized();
+
+        if (this.IsSettable)
+        {
+            CheckValueValidity(value);
+
+            this.currentValue = value;
+        }
+        else
+        {
+            // Be explicit, the solver should not be setting values it's not supposed to touch.
+            throw new AttemptedToSetUnSettableRowException();
+        }
+    }
+
+    /// <summary>
+    /// Properly initialized cells must have all parents defined.
+    /// </summary>
+    private void ThrowIfNotInitialized()
+    {
+        if (this.ParentRow is null || this.ParentColumn is null || this.ParentBox is null)
+        {
+            throw new CellParentsNotInitializedException();
+        }
+    }
+    private void SetInitialValue(int cellInt)
+    {
+        // 0 is not a valid number, but it is used by the file to signify empty.
+        // Handle it early, use null from here on out.
+        if (cellInt != 0)
+        {
+            CheckValueValidity(cellInt);
+            this.initialValue = cellInt;
+            this.currentValue = cellInt;
+        }
+    }
+
+    private static void CheckValueValidity(int? cellValue)
+    {
+        // Don't allow nulls to be set after init. Call ClearValue if the cell needs to be cleared.
+        if (cellValue is null || cellValue < SudokuConstants.MinValue || cellValue > SudokuConstants.MaxValue)
+        {
+            throw new InvalidSudokuCellValueException(cellValue);
         }
     }
 }

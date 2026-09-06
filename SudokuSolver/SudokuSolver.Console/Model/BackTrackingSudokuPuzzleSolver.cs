@@ -40,40 +40,47 @@ internal class BackTrackingSudokuPuzzleSolver : ISudokuPuzzleSolver
                 //PrintPuzzle(puzzle);
             }
 
-            if (!cell.IsSetAndValid())
-            {
-
-                if (currentCellState == CurrentCellStateEnum.Overflowed)
-                {
-                    // Go back to the previous cell and increment it.
-                    i -= 2;
-
-                    if (i < -1)
-                    {
-                        throw new OutsideOfPuzzleCellBoundsException();
-                    }
-                }
-                else if (currentCellState == CurrentCellStateEnum.Incremented ||
-                    currentCellState == CurrentCellStateEnum.Initialized)
-                {
-                    // Increment this cell again.
-                    i--;
-                }
-            }
-            else if (!cell.IsSettable && currentCellState == CurrentCellStateEnum.Overflowed)
-            {
-                // Go back to the previous cell and increment it.
-                i -= 2;
-            }
+            i = GetNextCellIndex(cell, i, currentCellState);
         }
     }
 
-    private static void PrintPuzzle(SudokuPuzzle puzzle)
+    /// <summary>
+    /// Determines the next cell to modify based on the state and validity of the current cell.
+    /// </summary>
+    /// <param name="cell">Cell that was just modified.</param>
+    /// <param name="currentCellIndex">Position of the cell in the puzzle.</param>
+    /// <param name="currentCellState">Modification state of the current cell.</param>
+    /// <returns>The index of the next cell to modify. Remember that this gets incremented by 1 at the start of the loop.</returns>
+    /// <exception cref="OutsideOfPuzzleCellBoundsException">Thrown if an invalid cell position is selected.</exception>
+    private int GetNextCellIndex(SudokuPuzzleCell cell, int currentCellIndex, CurrentCellStateEnum currentCellState)
     {
-        Console.Clear();
-        var puzzleLines = PuzzleToStringListHelper.BuildFileLinesFromPuzzleRows(0, puzzle);
-        foreach (var puzzleLine in puzzleLines) { Console.WriteLine(puzzleLine); }
-        Thread.Sleep(100);
+        var nextCellIndex = currentCellIndex;
+        if (!cell.IsSetAndValid())
+        {
+            if (currentCellState == CurrentCellStateEnum.Overflowed)
+            {
+                // Go back to the previous cell and modify it.
+                nextCellIndex -= 2;
+
+                if (nextCellIndex < -1)
+                {
+                    throw new OutsideOfPuzzleCellBoundsException();
+                }
+            }
+            else if (currentCellState == CurrentCellStateEnum.Incremented ||
+                currentCellState == CurrentCellStateEnum.Initialized)
+            {
+                // Increment this cell again.
+                nextCellIndex--;
+            }
+        }
+        else if (!cell.IsSettable && currentCellState == CurrentCellStateEnum.Overflowed)
+        {
+            // Go back to the previous cell and increment it.
+            nextCellIndex -= 2;
+        }
+
+        return nextCellIndex;
     }
 
     public void SolvePuzzles(List<SudokuPuzzle> puzzleList)
@@ -84,5 +91,13 @@ internal class BackTrackingSudokuPuzzleSolver : ISudokuPuzzleSolver
             this.SolvePuzzle(puzzleList[puzzleIndex]);
             Console.WriteLine("SOLVED");
         }
+    }
+
+    private static void PrintPuzzle(SudokuPuzzle puzzle)
+    {
+        Console.Clear();
+        var puzzleLines = PuzzleToStringListHelper.BuildFileLinesFromPuzzleRows(0, puzzle);
+        foreach (var puzzleLine in puzzleLines) { Console.WriteLine(puzzleLine); }
+        Thread.Sleep(100);
     }
 }

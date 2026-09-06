@@ -55,7 +55,7 @@ internal class SudokuPuzzle : ISudokuPuzzle
         {
             foreach (var cell in row.Cells)
             {
-                this.AddCellToCorrespondingBox(cell);
+                this.AppendCellToCorrespondingBox(cell);
             }
         }
     }
@@ -108,7 +108,12 @@ internal class SudokuPuzzle : ISudokuPuzzle
         return this.GetBox(boxColumn, boxRow);
     }
 
-    private void AddCellToCorrespondingBox(SudokuPuzzleCell cell)
+    /// <summary>
+    /// Add a cell to a box.
+    /// This will associate the cell with the box so it can be properly validated.
+    /// </summary>
+    /// <param name="cell">Puzzle cell to add to box.</param>
+    private void AppendCellToCorrespondingBox(SudokuPuzzleCell cell)
     {
         var boxRow = cell.ParentRow.Index / SudokuConstants.BoxRowsPerPuzzle;
         var boxColumn = cell.ParentColumn.Index / SudokuConstants.BoxColumnsPerPuzzle;
