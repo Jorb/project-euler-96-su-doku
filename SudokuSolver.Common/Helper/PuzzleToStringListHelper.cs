@@ -2,15 +2,20 @@
 // Copyright (c) Joe Braught. All rights reserved.
 // </copyright>
 
-using SudokuSolver.Common.Const;
-
 namespace SudokuSolver.Common.Helper
 {
+    using SudokuSolver.Common.Const;
+
     /// <summary>
     /// Convert a puzzle to a list of strings which match the definition text file.
     /// </summary>
     public class PuzzleToStringListHelper
     {
+        /// <summary>
+        /// Turn the puzzle into a list of strings with matches the puzzle definition file.
+        /// </summary>
+        /// <param name="puzzle">The puzzle to convert.</param>
+        /// <returns>List of strings representing the puzzle object.</returns>
         public static List<string> BuildFileLinesFromPuzzleRows(SudokuPuzzle puzzle)
         {
             var fileLinesFromRows = new List<string>();
@@ -55,7 +60,7 @@ namespace SudokuSolver.Common.Helper
 
             for (int puzzleRow = 0; puzzleRow < SudokuConstants.MaxValue; puzzleRow++)
             {
-                string newFileLine = "";
+                string newFileLine = string.Empty;
 
                 // Iterate the columns and get the associated box value.
                 for (int puzzleColumn = 0; puzzleColumn < SudokuConstants.MaxValue; puzzleColumn += SudokuConstants.BoxInnerColumns)
@@ -87,7 +92,7 @@ namespace SudokuSolver.Common.Helper
         /// Converts a cell to it's string value for storing in the file.
         /// </summary>
         /// <param name="cell">The cell to get a value from.</param>
-        /// <returns></returns>
+        /// <returns>The cell value as a string.</returns>
         private static string ConvertCellToFileStringValue(SudokuPuzzleCell cell)
         {
             if (cell.CurrentValue?.ToString() is not null)

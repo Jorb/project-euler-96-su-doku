@@ -25,5 +25,5 @@ internal enum CurrentCellSolveStateEnum
     /// <summary>
     /// Set the cell value to 1.
     /// </summary>
-    Initialized
+    Initialized,
 }
