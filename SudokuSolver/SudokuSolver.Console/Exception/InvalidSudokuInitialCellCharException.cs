@@ -5,7 +5,7 @@
 [Serializable]
 internal class InvalidSudokuInitialCellCharException : Exception
 {
-    private char cellValue;
+    private readonly char cellValue;
 
     public InvalidSudokuInitialCellCharException()
     {

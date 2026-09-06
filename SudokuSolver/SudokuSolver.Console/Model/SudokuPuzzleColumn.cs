@@ -12,12 +12,12 @@ internal class SudokuPuzzleColumn : SudokuCellCollection
 
     public SudokuPuzzleColumn(List<SudokuPuzzleCell> cells, int positionX)
     {
-        Cells = new List<SudokuPuzzleCell>();
+        this.Cells = new List<SudokuPuzzleCell>();
         this.Index = positionX;
         foreach (var cell in cells)
         {
             cell.AssignParentColumn(this);
-            Cells.Add(cell);
+            this.Cells.Add(cell);
         }
     }
 }

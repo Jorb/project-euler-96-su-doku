@@ -5,7 +5,7 @@
 [Serializable]
 internal class InvalidSudokuCellValueException : Exception
 {
-    private int cellInt;
+    private readonly int cellInt;
 
     public InvalidSudokuCellValueException(int? cellInt)
     {

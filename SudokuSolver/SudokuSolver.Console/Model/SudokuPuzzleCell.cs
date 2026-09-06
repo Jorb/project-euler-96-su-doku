@@ -19,36 +19,36 @@ internal class SudokuPuzzleCell
     /// <summary>
     /// The current value of the cell.
     /// </summary>
-    public int? CurrentValue { get => currentValue; set => SetValue(value); }
+    public int? CurrentValue { get => this.currentValue; set => this.SetValue(value); }
 
     /// <summary>
     /// If the initial value is null, then that means a value can be set.
     /// </summary>
-    public bool IsSettable { get => initialValue is null; }
+    public bool IsSettable { get => this.initialValue is null; }
 
     /// <summary>
     /// If a value has been set in this cell.
     /// </summary>
-    public bool IsSet { get => CurrentValue is not null; }
+    public bool IsSet { get => this.CurrentValue is not null; }
 
     public void ClearValue()
     {
         // Don't allow re-setting and firing changed event.
-        if (IsSettable)
+        if (this.IsSettable)
         {
-            currentValue = null;
+            this.currentValue = null;
         }
     }
 
     private void SetValue(int? value)
     {
-        ThrowIfNotInitialized();
+        this.ThrowIfNotInitialized();
 
-        if (IsSettable)
+        if (this.IsSettable)
         {
             CheckValueValidity(value);
 
-            currentValue = value;
+            this.currentValue = value;
         }
         else
         {
@@ -62,7 +62,7 @@ internal class SudokuPuzzleCell
     /// </summary>
     private void ThrowIfNotInitialized()
     {
-        if (ParentRow is null || ParentColumn is null || ParentBox is null)
+        if (this.ParentRow is null || this.ParentColumn is null || this.ParentBox is null)
         {
             throw new CellParentsNotInitializedException();
         }
@@ -70,8 +70,8 @@ internal class SudokuPuzzleCell
 
     public SudokuPuzzleCell(int cellInt, SudokuPuzzleRow sudokuPuzzleRow)
     {
-        ParentRow = sudokuPuzzleRow;
-        SetInitialValue(cellInt);
+        this.ParentRow = sudokuPuzzleRow;
+        this.SetInitialValue(cellInt);
     }
 
     private void SetInitialValue(int cellInt)
@@ -81,8 +81,8 @@ internal class SudokuPuzzleCell
         if (cellInt != 0)
         {
             CheckValueValidity(cellInt);
-            initialValue = cellInt;
-            currentValue = cellInt;
+            this.initialValue = cellInt;
+            this.currentValue = cellInt;
         }
     }
 
@@ -98,7 +98,7 @@ internal class SudokuPuzzleCell
     internal bool IsSetAndValid()
     {
         // Check against the parent row, column and box for validity.
-        return IsSet && ParentRow.IsValid && ParentColumn.IsValid && ParentBox.IsValid;
+        return this.IsSet && this.ParentRow.IsValid && this.ParentColumn.IsValid && this.ParentBox.IsValid;
     }
 
     internal void AssignParentColumn(SudokuPuzzleColumn parentColumn)

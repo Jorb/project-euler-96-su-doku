@@ -11,9 +11,9 @@ internal class SudokuCellCollection
     /// </summary>
     public List<SudokuPuzzleCell> Cells { get; protected set; }
 
-    public bool IsComplete { get => CellListValidationHelper.AreCellsCompleted(Cells); }
+    public bool IsComplete { get => CellListValidationHelper.AreCellsCompleted(this.Cells); }
 
-    public bool IsValid { get => CellListValidationHelper.AreCellsValid(Cells); }
+    public bool IsValid { get => CellListValidationHelper.AreCellsValid(this.Cells); }
 
-    public bool IsCompleteAndValid { get => IsComplete && IsValid; }
+    public bool IsCompleteAndValid { get => this.IsComplete && this.IsValid; }
 }

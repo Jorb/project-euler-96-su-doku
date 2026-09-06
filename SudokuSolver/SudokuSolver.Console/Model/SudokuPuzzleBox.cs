@@ -8,31 +8,31 @@ internal class SudokuPuzzleBox : SudokuCellCollection
 {
     public SudokuPuzzleBox(List<SudokuPuzzleCell> cells, int boxColumn, int boxRow)
     {
-        Cells = new List<SudokuPuzzleCell>();
+        this.Cells = new List<SudokuPuzzleCell>();
         foreach (var cell in cells)
         {
             cell.AssignParentBox(this);
-            Cells.Add(cell);
+            this.Cells.Add(cell);
         }
 
-        BoxColumn = boxColumn;
-        BoxRow = boxRow;
+        this.BoxColumn = boxColumn;
+        this.BoxRow = boxRow;
     }
 
     public SudokuPuzzleBox(int boxColumn, int boxRow)
     {
-        Cells = new List<SudokuPuzzleCell>();
-        BoxColumn = boxColumn;
-        BoxRow = boxRow;
+        this.Cells = new List<SudokuPuzzleCell>();
+        this.BoxColumn = boxColumn;
+        this.BoxRow = boxRow;
     }
 
     /// <summary>
-    /// Index of the box column (0 to 2 since there are 3 columns of boxes per puzzle)
+    /// Gets index of the box column (0 to 2 since there are 3 columns of boxes per puzzle).
     /// </summary>
     public int BoxColumn { get; }
 
     /// <summary>
-    /// Index of the box row (0 to 2 since there are 3 rows of boxes per puzzle)
+    /// Gets index of the box row (0 to 2 since there are 3 rows of boxes per puzzle).
     /// </summary>
     public int BoxRow { get; }
 
@@ -44,7 +44,7 @@ internal class SudokuPuzzleBox : SudokuCellCollection
 
         for (int cellIndex = startCell; cellIndex < startCell + SudokuConstants.BoxInnerRows; cellIndex++)
         {
-            rowCells.Add(Cells[cellIndex]);
+            rowCells.Add(this.Cells[cellIndex]);
         }
 
         return rowCells;
@@ -53,6 +53,6 @@ internal class SudokuPuzzleBox : SudokuCellCollection
     internal void AppendCell(SudokuPuzzleCell cell)
     {
         cell.AssignParentBox(this);
-        Cells.Add(cell);
+        this.Cells.Add(cell);
     }
 }

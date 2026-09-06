@@ -6,7 +6,7 @@ using SudokuSolver.Console.Helper;
 
 internal class SudokuPuzzleFactory : ISudokuPuzzleFactory
 {
-    private string sudokuFilePath;
+    private readonly string sudokuFilePath;
 
     public SudokuPuzzleFactory()
     {
@@ -35,16 +35,22 @@ internal class SudokuPuzzleFactory : ISudokuPuzzleFactory
             sudokuPuzzleList.Add(new SudokuPuzzle(puzzleLines));
         }
 
-        ValidatePuzzlesAgainstFile(sudokuPuzzleList, rawsudokuLines);
+        this.ValidatePuzzlesAgainstFile(sudokuPuzzleList, rawsudokuLines);
         return sudokuPuzzleList;
     }
 
     public List<SudokuPuzzle> BuildPuzzleList()
     {
-        return BuildAllPuzzlesFromFile(this.sudokuFilePath);
+        return this.BuildAllPuzzlesFromFile(this.sudokuFilePath);
     }
 
-    void ValidatePuzzlesAgainstFile(List<SudokuPuzzle> puzzleList, string[] rawsudokuLines)
+    /// <summary>
+    /// Build the sudoku input file using each of the objects to prove it was built properly.
+    /// </summary>
+    /// <param name="puzzleList">Collection of puzzle objects to print.</param>
+    /// <param name="rawsudokuLines">The raw lines from the input file.</param>
+    /// <exception cref="InMemorySudokuPuzzlesDontMatchFileException">Thrown if the puzzle objects weren't built properly.</exception>
+    private void ValidatePuzzlesAgainstFile(List<SudokuPuzzle> puzzleList, string[] rawsudokuLines)
     {
         List<string> fileLinesFromRows = new List<string>();
         List<string> fileLinesFromColumns = new List<string>();
@@ -64,7 +70,6 @@ internal class SudokuPuzzleFactory : ISudokuPuzzleFactory
 
             puzzleCount++;
         }
-
 
         for (int i = 0; i < rawsudokuLines.Length; i++)
         {
@@ -133,7 +138,6 @@ internal class SudokuPuzzleFactory : ISudokuPuzzleFactory
     //    }
     //}
 
-
     private static void BuildFileLinesFromPuzzleBoxes(List<string> fileLinesFromBoxes, int puzzleCount, SudokuPuzzle puzzle)
     {
         //fileLinesFromBoxes.Add($"Grid {puzzleCount.ToString("D2")}");
@@ -152,8 +156,6 @@ internal class SudokuPuzzleFactory : ISudokuPuzzleFactory
         //        boxYIndex++;
         //    }
         //}
-
-
 
         //for (int yIndexBox = 0; yIndexBox < 3; yIndexBox++)
         //{

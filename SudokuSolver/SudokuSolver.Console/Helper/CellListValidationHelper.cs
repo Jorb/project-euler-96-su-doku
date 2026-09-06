@@ -12,7 +12,7 @@ namespace SudokuSolver.Console.Helper
         /// Only Checks for completeness, not validity.
         /// All cells must have a non null value.
         /// </summary>
-        /// <param name="cells"></param>
+        /// <param name="cells">The collection of cells to validate.</param>
         /// <returns>The collection of cells to check.</returns>
         internal static bool AreCellsCompleted(List<SudokuPuzzleCell> cells)
         {
@@ -20,7 +20,7 @@ namespace SudokuSolver.Console.Helper
         }
 
         /// <summary>
-        /// Validate that there are no duplicates in a collection of cells
+        /// Validate that there are no duplicates in a collection of cells.
         /// </summary>
         /// <param name="cells">The collection of cells to validate.</param>
         /// <returns>True if valid.</returns>
