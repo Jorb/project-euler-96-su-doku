@@ -9,11 +9,13 @@ internal class CellParentBoxAlreadyAssignedException : Exception
     {
     }
 
-    public CellParentBoxAlreadyAssignedException(string? message) : base(message)
+    public CellParentBoxAlreadyAssignedException(string? message)
+        : base(message)
     {
     }
 
-    public CellParentBoxAlreadyAssignedException(string? message, Exception? innerException) : base(message, innerException)
+    public CellParentBoxAlreadyAssignedException(string? message, Exception? innerException)
+        : base(message, innerException)
     {
     }
 }

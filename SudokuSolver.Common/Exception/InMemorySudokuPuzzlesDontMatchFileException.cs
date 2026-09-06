@@ -9,11 +9,13 @@ internal class InMemorySudokuPuzzlesDontMatchFileException : Exception
     {
     }
 
-    public InMemorySudokuPuzzlesDontMatchFileException(string? message) : base(message)
+    public InMemorySudokuPuzzlesDontMatchFileException(string? message)
+        : base(message)
     {
     }
 
-    public InMemorySudokuPuzzlesDontMatchFileException(string? message, Exception? innerException) : base(message, innerException)
+    public InMemorySudokuPuzzlesDontMatchFileException(string? message, Exception? innerException)
+        : base(message, innerException)
     {
     }
 }

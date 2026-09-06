@@ -16,11 +16,13 @@ internal class InvalidSudokuInitialCellCharException : Exception
         this.cellValue = cellValue;
     }
 
-    public InvalidSudokuInitialCellCharException(string? message) : base(message)
+    public InvalidSudokuInitialCellCharException(string? message)
+        : base(message)
     {
     }
 
-    public InvalidSudokuInitialCellCharException(string? message, Exception? innerException) : base(message, innerException)
+    public InvalidSudokuInitialCellCharException(string? message, Exception? innerException)
+        : base(message, innerException)
     {
     }
 }

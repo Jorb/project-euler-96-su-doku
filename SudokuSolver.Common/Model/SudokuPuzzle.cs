@@ -11,7 +11,7 @@ public class SudokuPuzzle
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="SudokuPuzzle"/> class.
-    /// Build a sudoku puzzle object from raw string lines.
+    /// Build a sudoku puzzle object from raw string lines as they come from the puzzle definition file.
     /// </summary>
     /// <param name="puzzleLines">String lines read from file.</param>
     public SudokuPuzzle(int id, List<string> puzzleLines)

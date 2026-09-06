@@ -11,11 +11,13 @@ internal class InvalidSudokuCellValueException : Exception
     {
     }
 
-    public InvalidSudokuCellValueException(string? message) : base(message)
+    public InvalidSudokuCellValueException(string? message)
+        : base(message)
     {
     }
 
-    public InvalidSudokuCellValueException(string? message, Exception? innerException) : base(message, innerException)
+    public InvalidSudokuCellValueException(string? message, Exception? innerException)
+        : base(message, innerException)
     {
     }
 }

@@ -22,7 +22,7 @@ namespace SudokuSolver.Common.Helper
             fileLinesFromRows.Add(CreateGridTitle(puzzle.Id));
             foreach (var row in puzzle.Rows)
             {
-                string rowString = "";
+                string rowString = string.Empty;
                 foreach (var cell in row.Cells)
                 {
                     rowString += ConvertCellToFileStringValue(cell);
@@ -34,13 +34,19 @@ namespace SudokuSolver.Common.Helper
             return fileLinesFromRows;
         }
 
-        internal static List<string> BuildFileLinesFromPuzzleColumns(SudokuPuzzle puzzle)
+        /// <summary>
+        /// Use the column objects to build the file.
+        /// This is validation that the columns were constructed properly.
+        /// </summary>
+        /// <param name="puzzle">Sudoku puzzle in-memory object.</param>
+        /// <returns>List of strings matching the format of the sudoku definition file.</returns>
+        public static List<string> BuildFileLinesFromPuzzleColumns(SudokuPuzzle puzzle)
         {
             var fileLinesFromColumns = new List<string>();
             fileLinesFromColumns.Add(CreateGridTitle(puzzle.Id));
             for (int yIndex = 0; yIndex < SudokuConstants.MaxValue; yIndex++)
             {
-                string rowString = "";
+                string rowString = string.Empty;
 
                 foreach (var column in puzzle.Columns)
                 {
@@ -53,7 +59,13 @@ namespace SudokuSolver.Common.Helper
             return fileLinesFromColumns;
         }
 
-        internal static List<string> BuildFileLinesFromPuzzleBoxes(SudokuPuzzle puzzle)
+        /// <summary>
+        /// Use the box objects to build the file.
+        /// This is validation that the boxes were constructed properly.
+        /// </summary>
+        /// <param name="puzzle">Sudoku puzzle in-memory object.</param>
+        /// <returns>List of strings matching the format of the sudoku definition file.</returns>
+        public static List<string> BuildFileLinesFromPuzzleBoxes(SudokuPuzzle puzzle)
         {
             var fileLinesFromBoxes = new List<string>();
             fileLinesFromBoxes.Add(CreateGridTitle(puzzle.Id));

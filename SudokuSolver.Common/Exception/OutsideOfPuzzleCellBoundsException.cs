@@ -9,11 +9,13 @@ internal class OutsideOfPuzzleCellBoundsException : Exception
     {
     }
 
-    public OutsideOfPuzzleCellBoundsException(string? message) : base(message)
+    public OutsideOfPuzzleCellBoundsException(string? message)
+        : base(message)
     {
     }
 
-    public OutsideOfPuzzleCellBoundsException(string? message, Exception? innerException) : base(message, innerException)
+    public OutsideOfPuzzleCellBoundsException(string? message, Exception? innerException)
+        : base(message, innerException)
     {
     }
 }

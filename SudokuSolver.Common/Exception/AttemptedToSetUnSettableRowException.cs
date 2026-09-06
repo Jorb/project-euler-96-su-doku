@@ -9,11 +9,13 @@ internal class AttemptedToSetUnSettableRowException : Exception
     {
     }
 
-    public AttemptedToSetUnSettableRowException(string? message) : base(message)
+    public AttemptedToSetUnSettableRowException(string? message)
+        : base(message)
     {
     }
 
-    public AttemptedToSetUnSettableRowException(string? message, Exception? innerException) : base(message, innerException)
+    public AttemptedToSetUnSettableRowException(string? message, Exception? innerException)
+        : base(message, innerException)
     {
     }
 }

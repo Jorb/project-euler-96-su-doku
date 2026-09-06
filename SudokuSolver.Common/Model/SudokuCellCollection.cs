@@ -11,7 +11,7 @@ using SudokuSolver.Common.Helper;
 internal class SudokuCellCollection
 {
     /// <summary>
-    /// The cells that make up the row.
+    /// Gets the cells that make up the row.
     /// </summary>
     public List<SudokuPuzzleCell> Cells { get; } = new List<SudokuPuzzleCell>();
 

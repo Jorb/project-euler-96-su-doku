@@ -9,11 +9,13 @@ internal class CellParentColumnAlreadyAssignedException : Exception
     {
     }
 
-    public CellParentColumnAlreadyAssignedException(string? message) : base(message)
+    public CellParentColumnAlreadyAssignedException(string? message)
+        : base(message)
     {
     }
 
-    public CellParentColumnAlreadyAssignedException(string? message, Exception? innerException) : base(message, innerException)
+    public CellParentColumnAlreadyAssignedException(string? message, Exception? innerException)
+        : base(message, innerException)
     {
     }
 }
