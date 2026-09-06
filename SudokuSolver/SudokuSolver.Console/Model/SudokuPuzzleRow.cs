@@ -2,15 +2,11 @@
 // Copyright (c) Joe Braught. All rights reserved.
 // </copyright>
 
+/// <summary>
+/// Sudoku puzzle row. Contains 9 cells.
+/// </summary>
 internal class SudokuPuzzleRow : SudokuCellCollection
 {
-
-    /// <summary>
-    /// The index of the row in the puzzle.
-    /// 0 is top row, 9 is bottom row.
-    /// </summary>
-    public int Index { get; }
-
     /// <summary>
     /// Initializes a new instance of the <see cref="SudokuPuzzleRow"/> class.
     /// Build an instance of a row from a string.
@@ -36,4 +32,10 @@ internal class SudokuPuzzleRow : SudokuCellCollection
             }
         }
     }
+
+    /// <summary>
+    /// The index of the row in the puzzle.
+    /// 0 is top row, 9 is bottom row.
+    /// </summary>
+    public int Index { get; }
 }

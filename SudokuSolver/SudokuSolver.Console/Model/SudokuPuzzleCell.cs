@@ -12,6 +12,17 @@ internal class SudokuPuzzleCell
     private int? initialValue = null;
     private int? currentValue = null;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="SudokuPuzzleCell"/> class.
+    /// </summary>
+    /// <param name="cellInt">The initial value of the cell. 0 is unassigned.</param>
+    /// <param name="parentRow">The row that contains this cell.</param>
+    public SudokuPuzzleCell(int cellInt, SudokuPuzzleRow parentRow)
+    {
+        this.ParentRow = parentRow;
+        this.SetInitialValue(cellInt);
+    }
+
     public SudokuPuzzleRow ParentRow { get; private set; }
     public SudokuPuzzleColumn ParentColumn { get; private set; }
     public SudokuPuzzleBox ParentBox { get; private set; }
@@ -38,12 +49,6 @@ internal class SudokuPuzzleCell
         {
             this.currentValue = null;
         }
-    }
-
-    public SudokuPuzzleCell(int cellInt, SudokuPuzzleRow sudokuPuzzleRow)
-    {
-        this.ParentRow = sudokuPuzzleRow;
-        this.SetInitialValue(cellInt);
     }
 
     internal bool IsSetAndValid()
@@ -103,6 +108,7 @@ internal class SudokuPuzzleCell
             throw new CellParentsNotInitializedException();
         }
     }
+
     private void SetInitialValue(int cellInt)
     {
         // 0 is not a valid number, but it is used by the file to signify empty.

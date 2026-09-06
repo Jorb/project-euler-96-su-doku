@@ -14,8 +14,9 @@ internal class SudokuPuzzle : ISudokuPuzzle
     /// Build a sudoku puzzle object from raw string lines.
     /// </summary>
     /// <param name="puzzleLines">String lines read from file.</param>
-    public SudokuPuzzle(List<string> puzzleLines)
+    public SudokuPuzzle(int id, List<string> puzzleLines)
     {
+        this.Id = id;
         this.Rows = new List<SudokuPuzzleRow>();
         this.Columns = new List<SudokuPuzzleColumn>();
         this.Boxes = new List<SudokuPuzzleBox>();
@@ -59,6 +60,8 @@ internal class SudokuPuzzle : ISudokuPuzzle
             }
         }
     }
+
+    internal int Id { get; }
 
     /// <summary>
     /// Gets the 9 rows of the puzzle.

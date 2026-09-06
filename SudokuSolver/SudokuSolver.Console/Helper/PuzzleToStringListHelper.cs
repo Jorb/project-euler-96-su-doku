@@ -8,10 +8,10 @@ namespace SudokuSolver.Console.Helper
 {
     internal class PuzzleToStringListHelper
     {
-        internal static List<string> BuildFileLinesFromPuzzleRows(int puzzleCount, SudokuPuzzle puzzle)
+        internal static List<string> BuildFileLinesFromPuzzleRows(SudokuPuzzle puzzle)
         {
             var fileLinesFromRows = new List<string>();
-            fileLinesFromRows.Add(CreateGridTitle(puzzleCount));
+            fileLinesFromRows.Add(CreateGridTitle(puzzle.Id));
             foreach (var row in puzzle.Rows)
             {
                 string rowString = "";
@@ -26,10 +26,10 @@ namespace SudokuSolver.Console.Helper
             return fileLinesFromRows;
         }
 
-        internal static List<string> BuildFileLinesFromPuzzleColumns(int puzzleCount, SudokuPuzzle puzzle)
+        internal static List<string> BuildFileLinesFromPuzzleColumns(SudokuPuzzle puzzle)
         {
             var fileLinesFromColumns = new List<string>();
-            fileLinesFromColumns.Add(CreateGridTitle(puzzleCount));
+            fileLinesFromColumns.Add(CreateGridTitle(puzzle.Id));
             for (int yIndex = 0; yIndex < SudokuConstants.MaxValue; yIndex++)
             {
                 string rowString = "";
@@ -45,10 +45,10 @@ namespace SudokuSolver.Console.Helper
             return fileLinesFromColumns;
         }
 
-        internal static List<string> BuildFileLinesFromPuzzleBoxes(int puzzleCount, SudokuPuzzle puzzle)
+        internal static List<string> BuildFileLinesFromPuzzleBoxes(SudokuPuzzle puzzle)
         {
             var fileLinesFromBoxes = new List<string>();
-            fileLinesFromBoxes.Add(CreateGridTitle(puzzleCount));
+            fileLinesFromBoxes.Add(CreateGridTitle(puzzle.Id));
 
             for (int puzzleRow = 0; puzzleRow < SudokuConstants.MaxValue; puzzleRow++)
             {

@@ -5,17 +5,21 @@
 Console.WriteLine("Starting Sudoku Solver");
 
 Console.WriteLine("Reading puzzle file");
-var puzzleFactory = new SudokuPuzzleFactory("sudoku.txt");
+var puzzleFactory = new SudokuPuzzleFactory();
 
 Console.WriteLine("Building puzzle objects");
-var puzzleList = puzzleFactory.BuildPuzzleList();
+var puzzleList = puzzleFactory.BuildAllPuzzlesFromFile("sudoku.txt");
 
 ISudokuPuzzleSolver puzzleSolver = new BackTrackingSudokuPuzzleSolver();
 
+Console.WriteLine("Show live solving? (y/n)");
+var showLive = Console.ReadKey().Key.Equals(ConsoleKey.Y);
+
 Console.WriteLine("Solving puzzles");
-puzzleSolver.SolvePuzzles(puzzleList);
+puzzleSolver.SolvePuzzles(puzzleList, showLive);
 
 var puzzlePrinter = new SudokuPuzzlePrinter();
 
-Console.WriteLine("Writing solved puzzles to file");
-puzzlePrinter.PrintPuzzlesToFile(puzzleList, "sudokuSolved.txt");
+var solvedFilePath = $"sudokuSolved_{Guid.NewGuid()}.txt";
+Console.WriteLine($"Writing solved puzzles to file: {solvedFilePath}");
+puzzlePrinter.PrintPuzzlesToFile(puzzleList, solvedFilePath);

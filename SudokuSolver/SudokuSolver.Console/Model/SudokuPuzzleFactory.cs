@@ -4,26 +4,30 @@
 
 using SudokuSolver.Console.Helper;
 
-internal class SudokuPuzzleFactory : ISudokuPuzzleFactory
+/// <summary>
+/// Builds puzzle in-memory objects by deserialzing a puzzle file.
+/// </summary>
+internal class SudokuPuzzleFactory
 {
-    private readonly string sudokuFilePath;
-
+    /// <summary>
+    /// Initializes a new instance of the <see cref="SudokuPuzzleFactory"/> class.
+    /// </summary>
     public SudokuPuzzleFactory()
     {
     }
 
-    public SudokuPuzzleFactory(string sudokuFilePath)
-    {
-        this.sudokuFilePath = sudokuFilePath;
-    }
-
-    private List<SudokuPuzzle> BuildAllPuzzlesFromFile(string sudokuFilePath)
+    /// <summary>
+    /// Build list of puzzle objects by deserializing definition file.
+    /// </summary>
+    /// <param name="sudokuFilePath">Sudoku puzzle definition file.</param>
+    /// <returns>A list of Sudoku puzzle objects.</returns>
+    public List<SudokuPuzzle> BuildAllPuzzlesFromFile(string sudokuFilePath)
     {
         List<SudokuPuzzle> sudokuPuzzleList = new List<SudokuPuzzle>();
 
         var rawsudokuLines = File.ReadAllLines(sudokuFilePath);
 
-        //Parse out each puzzle (could do this with fancy regex, but I don't wanna right now.)
+        // Parse out each puzzle (could do this with fancy regex, but I don't wanna right now.)
         for (int i = 0; i < rawsudokuLines.Length; i += 10)
         {
             List<string> puzzleLines = new List<string>();
@@ -32,16 +36,12 @@ internal class SudokuPuzzleFactory : ISudokuPuzzleFactory
                 puzzleLines.Add(rawsudokuLines[j]);
             }
 
-            sudokuPuzzleList.Add(new SudokuPuzzle(puzzleLines));
+            var puzzleIndex = i / 10;
+            sudokuPuzzleList.Add(new SudokuPuzzle(puzzleIndex + 1, puzzleLines));
         }
 
         this.ValidatePuzzlesAgainstFile(sudokuPuzzleList, rawsudokuLines);
         return sudokuPuzzleList;
-    }
-
-    public List<SudokuPuzzle> BuildPuzzleList()
-    {
-        return this.BuildAllPuzzlesFromFile(this.sudokuFilePath);
     }
 
     /// <summary>
@@ -59,14 +59,14 @@ internal class SudokuPuzzleFactory : ISudokuPuzzleFactory
         var puzzleCount = 1;
         foreach (var puzzle in puzzleList)
         {
-            //Convert the puzzle back into the file format using the rows objects
-            fileLinesFromRows.AddRange(PuzzleToStringListHelper.BuildFileLinesFromPuzzleRows(puzzleCount, puzzle));
+            // Convert the puzzle back into the file format using the rows objects
+            fileLinesFromRows.AddRange(PuzzleToStringListHelper.BuildFileLinesFromPuzzleRows(puzzle));
 
-            //Convert the puzzle back into the file format using the columns objects
-            fileLinesFromColumns.AddRange(PuzzleToStringListHelper.BuildFileLinesFromPuzzleColumns(puzzleCount, puzzle));
+            // Convert the puzzle back into the file format using the columns objects
+            fileLinesFromColumns.AddRange(PuzzleToStringListHelper.BuildFileLinesFromPuzzleColumns(puzzle));
 
-            //Convert the puzzle back into the file format using the box objects
-            fileLinesFromBoxes.AddRange(PuzzleToStringListHelper.BuildFileLinesFromPuzzleBoxes(puzzleCount, puzzle));
+            // Convert the puzzle back into the file format using the box objects
+            fileLinesFromBoxes.AddRange(PuzzleToStringListHelper.BuildFileLinesFromPuzzleBoxes(puzzle));
 
             puzzleCount++;
         }
@@ -91,94 +91,5 @@ internal class SudokuPuzzleFactory : ISudokuPuzzleFactory
                 throw new InMemorySudokuPuzzlesDontMatchFileException();
             }
         }
-    }
-
-    //private static void BuildFileLinesFromPuzzleRows(List<string> fileLinesFromRows, int puzzleCount, SudokuPuzzle puzzle)
-    //{
-    //    fileLinesFromRows.Add($"Grid {puzzleCount.ToString("D2")}");
-    //    foreach (var row in puzzle.Rows)
-    //    {
-    //        string rowString = "";
-    //        foreach (var cell in row.Cells)
-    //        {
-    //            if (cell.CurrentValue is not null)
-    //            {
-    //                rowString += cell.CurrentValue.ToString();
-    //            }
-    //            else
-    //            {
-    //                rowString += "0";
-    //            }
-    //        }
-    //        fileLinesFromRows.Add(rowString);
-    //    }
-    //}
-
-    //private static void BuildFileLinesFromPuzzleColumns(List<string> fileLinesFromColumns, int puzzleCount, SudokuPuzzle puzzle)
-    //{
-    //    fileLinesFromColumns.Add($"Grid {puzzleCount.ToString("D2")}");
-    //    for (int yIndex = 0; yIndex < 9; yIndex++)
-    //    {
-    //        string rowString = "";
-
-    //        foreach (var column in puzzle.Columns)
-    //        {
-
-    //            if (column.Cells[yIndex].CurrentValue is not null)
-    //            {
-    //                rowString += column.Cells[yIndex].CurrentValue.ToString();
-    //            }
-    //            else
-    //            {
-    //                rowString += "0";
-    //            }
-    //        }
-    //        fileLinesFromColumns.Add(rowString);
-
-    //    }
-    //}
-
-    private static void BuildFileLinesFromPuzzleBoxes(List<string> fileLinesFromBoxes, int puzzleCount, SudokuPuzzle puzzle)
-    {
-        //fileLinesFromBoxes.Add($"Grid {puzzleCount.ToString("D2")}");
-        //int boxXIndex = 0;
-        //int boxYIndex = 0;
-        //foreach(var box in puzzle.Boxes)
-        //{
-        //    string boxRow0, boxRow1, boxRow2;
-
-        //    boxRow0 = ${ puzzle.Boxes[0].Cells }
-
-        //    boxXIndex++;
-        //    boxXIndex = boxXIndex % 3;
-        //    if(boxXIndex == 0)
-        //    {
-        //        boxYIndex++;
-        //    }
-        //}
-
-        //for (int yIndexBox = 0; yIndexBox < 3; yIndexBox++)
-        //{
-        //    string rowString = "";
-
-        //    for (int j = yIndexBox; j < yIndexBox + 3; j++)
-        //    {
-        //        var box = puzzle.Boxes[j];
-
-        //        for (int k = 0; k < 3; k++)
-        //        {
-        //            if (box.Cells[k].CurrentValue is not null)
-        //            {
-        //                rowString += column.Cells[yIndexBox].CurrentValue.ToString();
-        //            }
-        //            else
-        //            {
-        //                rowString += "0";
-        //            }
-        //        }
-        //    }
-        //    fileLinesFromBoxes.Add(rowString);
-
-        //}
     }
 }
