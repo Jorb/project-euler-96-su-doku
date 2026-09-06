@@ -15,7 +15,6 @@ internal class SudokuPuzzleRow : SudokuCellCollection
     /// <exception cref="InvalidSudokuInitialCellCharException">Throw exception if the char cannot be parsed as an int between 1 and 9.</exception>
     public SudokuPuzzleRow(string line, int index)
     {
-        this.Cells = new List<SudokuPuzzleCell>();
         this.Index = index;
 
         foreach (char cellValue in line.ToCharArray())

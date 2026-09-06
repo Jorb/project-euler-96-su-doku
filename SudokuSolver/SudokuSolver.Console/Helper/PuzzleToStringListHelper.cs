@@ -6,6 +6,9 @@ using SudokuSolver.Console.Const;
 
 namespace SudokuSolver.Console.Helper
 {
+    /// <summary>
+    /// Convert a puzzle to a list of strings which match the definition text file.
+    /// </summary>
     internal class PuzzleToStringListHelper
     {
         internal static List<string> BuildFileLinesFromPuzzleRows(SudokuPuzzle puzzle)
@@ -62,7 +65,7 @@ namespace SudokuSolver.Console.Helper
                     var innerBoxRow = puzzleRow % SudokuConstants.BoxColumnsPerPuzzle;
 
                     // Boxes have 3 rows inside. Get the inner row.
-                    var currentBoxRowValues = currentBox.GetRowValues(innerBoxRow);
+                    var currentBoxRowValues = currentBox.GetInnerRowCells(innerBoxRow);
                     foreach (var cell in currentBoxRowValues)
                     {
                         newFileLine += ConvertCellToFileStringValue(cell);
@@ -87,14 +90,14 @@ namespace SudokuSolver.Console.Helper
         /// <returns></returns>
         private static string ConvertCellToFileStringValue(SudokuPuzzleCell cell)
         {
-            if (cell.CurrentValue is null)
+            if (cell.CurrentValue?.ToString() is not null)
             {
-                // The file uses 0 to signify unassigned values cells. My logic uses null.
-                return SudokuConstants.FileEmptyCell;
+                return cell.CurrentValue.ToString();
             }
             else
             {
-                return cell.CurrentValue.ToString();
+                // The file uses 0 to signify unassigned values cells. My logic uses null.
+                return SudokuConstants.FileEmptyCell;
             }
         }
     }

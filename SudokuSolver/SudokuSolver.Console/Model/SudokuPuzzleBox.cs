@@ -4,24 +4,18 @@
 
 using SudokuSolver.Console.Const;
 
+/// <summary>
+/// A box element of the sudoku puzzle (3x3 sub grid of the puzzle).
+/// </summary>
 internal class SudokuPuzzleBox : SudokuCellCollection
 {
-    public SudokuPuzzleBox(List<SudokuPuzzleCell> cells, int boxColumn, int boxRow)
-    {
-        this.Cells = new List<SudokuPuzzleCell>();
-        foreach (var cell in cells)
-        {
-            cell.AssignParentBox(this);
-            this.Cells.Add(cell);
-        }
-
-        this.BoxColumn = boxColumn;
-        this.BoxRow = boxRow;
-    }
-
+    /// <summary>
+    /// Initializes a new instance of the <see cref="SudokuPuzzleBox"/> class.
+    /// </summary>
+    /// <param name="boxColumn">The column of the box (0 to 2).</param>
+    /// <param name="boxRow">The row of the box (0 to 2).</param>
     public SudokuPuzzleBox(int boxColumn, int boxRow)
     {
-        this.Cells = new List<SudokuPuzzleCell>();
         this.BoxColumn = boxColumn;
         this.BoxRow = boxRow;
     }
@@ -36,7 +30,12 @@ internal class SudokuPuzzleBox : SudokuCellCollection
     /// </summary>
     public int BoxRow { get; }
 
-    internal List<SudokuPuzzleCell> GetRowValues(int innerBoxRow)
+    /// <summary>
+    /// Get all of the cells from an inner row of the box (3 values per row.)
+    /// </summary>
+    /// <param name="innerBoxRow">The inner row of the box. A box contains 3 rows.</param>
+    /// <returns>A list of the 3 cells in the desired row.</returns>
+    internal List<SudokuPuzzleCell> GetInnerRowCells(int innerBoxRow)
     {
         var rowCells = new List<SudokuPuzzleCell>();
         // Cells are not stored in columns and rows in this object. We have to derive that.
@@ -50,6 +49,11 @@ internal class SudokuPuzzleBox : SudokuCellCollection
         return rowCells;
     }
 
+    /// <summary>
+    /// Append a cell to this box.
+    /// The cells are not stored explicitly as rows and columns, but the rows can be derived (row = cell/3, cell = cell %3).
+    /// </summary>
+    /// <param name="cell">Cell to append to this box.</param>
     internal void AppendCell(SudokuPuzzleCell cell)
     {
         cell.AssignParentBox(this);

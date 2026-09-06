@@ -2,6 +2,9 @@
 // Copyright (c) Joe Braught. All rights reserved.
 // </copyright>
 
+/// <summary>
+/// A column element of a sudoku puzzle.
+/// </summary>
 internal class SudokuPuzzleColumn : SudokuCellCollection
 {
     /// <summary>
@@ -11,7 +14,6 @@ internal class SudokuPuzzleColumn : SudokuCellCollection
     /// <param name="index">Position of the column in the puzzle. 0 is the leftmost, 8 is the rightmost.</param>
     public SudokuPuzzleColumn(List<SudokuPuzzleCell> cells, int index)
     {
-        this.Cells = new List<SudokuPuzzleCell>();
         this.Index = index;
         foreach (var cell in cells)
         {

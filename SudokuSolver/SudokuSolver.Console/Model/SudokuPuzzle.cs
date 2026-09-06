@@ -7,7 +7,7 @@ using SudokuSolver.Console.Const;
 /// <summary>
 /// A Sudoku puzzle. 9X9 with 9 boxes.
 /// </summary>
-internal class SudokuPuzzle : ISudokuPuzzle
+internal class SudokuPuzzle
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="SudokuPuzzle"/> class.
@@ -61,6 +61,9 @@ internal class SudokuPuzzle : ISudokuPuzzle
         }
     }
 
+    /// <summary>
+    /// Gets the Id of the puzzle. Corresponds the the grid number in the file.
+    /// </summary>
     internal int Id { get; }
 
     /// <summary>
@@ -118,8 +121,15 @@ internal class SudokuPuzzle : ISudokuPuzzle
     /// <param name="cell">Puzzle cell to add to box.</param>
     private void AppendCellToCorrespondingBox(SudokuPuzzleCell cell)
     {
-        var boxRow = cell.ParentRow.Index / SudokuConstants.BoxRowsPerPuzzle;
-        var boxColumn = cell.ParentColumn.Index / SudokuConstants.BoxColumnsPerPuzzle;
-        this.GetBox(boxColumn, boxRow).AppendCell(cell);
+        if (cell.ParentColumn is not null)
+        {
+            var boxRow = cell.ParentRow.Index / SudokuConstants.BoxRowsPerPuzzle;
+            var boxColumn = cell.ParentColumn.Index / SudokuConstants.BoxColumnsPerPuzzle;
+            this.GetBox(boxColumn, boxRow).AppendCell(cell);
+        }
+        else
+        {
+            throw new CellParentsNotInitializedException();
+        }
     }
 }

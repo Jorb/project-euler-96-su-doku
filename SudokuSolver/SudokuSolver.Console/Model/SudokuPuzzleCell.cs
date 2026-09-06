@@ -4,12 +4,20 @@
 
 using SudokuSolver.Console.Const;
 
+/// <summary>
+/// An individual cell of a sudoku puzzle.
+/// A cell contains a number between 1 and 9.
+/// </summary>
 internal class SudokuPuzzleCell
 {
     /// <summary>
     /// 1-9 is valid. Null signifies empty.
     /// </summary>
     private int? initialValue = null;
+
+    /// <summary>
+    /// The current value entered in the cell.
+    /// </summary>
     private int? currentValue = null;
 
     /// <summary>
@@ -23,9 +31,20 @@ internal class SudokuPuzzleCell
         this.SetInitialValue(cellInt);
     }
 
-    public SudokuPuzzleRow ParentRow { get; private set; }
-    public SudokuPuzzleColumn ParentColumn { get; private set; }
-    public SudokuPuzzleBox ParentBox { get; private set; }
+    /// <summary>
+    /// Gets the row that contains this cell.
+    /// </summary>
+    public SudokuPuzzleRow ParentRow { get; }
+
+    /// <summary>
+    /// Gets the column that contains this cell.
+    /// </summary>
+    public SudokuPuzzleColumn? ParentColumn { get; private set; }
+
+    /// <summary>
+    /// Gets the box that contains this cell.
+    /// </summary>
+    public SudokuPuzzleBox? ParentBox { get; private set; }
 
     /// <summary>
     /// The current value of the cell.
@@ -42,6 +61,9 @@ internal class SudokuPuzzleCell
     /// </summary>
     public bool IsSet { get => this.CurrentValue is not null; }
 
+    /// <summary>
+    /// Clear the cell value. Remove the number that was entered.
+    /// </summary>
     public void ClearValue()
     {
         // Don't allow re-setting and firing changed event.
@@ -51,12 +73,27 @@ internal class SudokuPuzzleCell
         }
     }
 
+    /// <summary>
+    /// Check if the cell was set and if it is valid.
+    /// Valid means that the row, column and box of the puzzle are correct with no duplicate numbers.
+    /// </summary>
+    /// <returns>True if the cell has a value set (number from 1 to 9) and the puzzle is correct so far.</returns>
     internal bool IsSetAndValid()
     {
-        // Check against the parent row, column and box for validity.
-        return this.IsSet && this.ParentRow.IsValid && this.ParentColumn.IsValid && this.ParentBox.IsValid;
+        if (this.ParentColumn is not null && this.ParentBox is not null)
+        {
+            // Check against the parent row, column and box for validity.
+            return this.IsSet && this.ParentRow.IsValid && this.ParentColumn.IsValid && this.ParentBox.IsValid;
+        }
+
+        throw new CellParentsNotInitializedException();
     }
 
+    /// <summary>
+    /// Assign the parent column to this cell.
+    /// </summary>
+    /// <param name="parentColumn">The column that contains this cell.</param>
+    /// <exception cref="CellParentColumnAlreadyAssignedException">Thrown if the parent column was assigned again.</exception>
     internal void AssignParentColumn(SudokuPuzzleColumn parentColumn)
     {
         if (this.ParentColumn is null)
@@ -69,6 +106,11 @@ internal class SudokuPuzzleCell
         }
     }
 
+    /// <summary>
+    /// Assign the parent box to this cell.
+    /// </summary>
+    /// <param name="parentBox">The box that contains this cell.</param>
+    /// <exception cref="CellParentBoxAlreadyAssignedException">Thrown if the parent box was assigned again.</exception>
     internal void AssignParentBox(SudokuPuzzleBox parentBox)
     {
         if (this.ParentBox is null)
