@@ -13,7 +13,7 @@ public class BackTrackingSudokuPuzzleSolver : ISudokuPuzzleSolver
 {
     public void SolvePuzzle(SudokuPuzzle puzzle, bool showLiveView, Action<SudokuPuzzle> showPuzzle)
     {
-        var currentCellState = CurrentCellStateEnum.Unknown;
+        var currentCellState = CurrentCellSolveStateEnum.Unknown;
         for (int currentCellIndex = 0; currentCellIndex < puzzle.Cells.Count; currentCellIndex++)
         {
             currentCellState = ModifyCurrentCell(currentCellState, puzzle.Cells[currentCellIndex]);
@@ -47,7 +47,7 @@ public class BackTrackingSudokuPuzzleSolver : ISudokuPuzzleSolver
         }
     }
 
-    private static CurrentCellStateEnum ModifyCurrentCell(CurrentCellStateEnum currentCellState, SudokuPuzzleCell cell)
+    private static CurrentCellSolveStateEnum ModifyCurrentCell(CurrentCellSolveStateEnum currentCellState, SudokuPuzzleCell cell)
     {
         if (cell.IsSettable)
         {
@@ -57,20 +57,20 @@ public class BackTrackingSudokuPuzzleSolver : ISudokuPuzzleSolver
                 {
                     //Clear the value and go back to the previous sibling;
                     cell.ClearValue();
-                    currentCellState = CurrentCellStateEnum.Overflowed;
+                    currentCellState = CurrentCellSolveStateEnum.Overflowed;
                 }
                 else
                 {
                     // Increment if less than 9.
                     cell.CurrentValue++;
-                    currentCellState = CurrentCellStateEnum.Incremented;
+                    currentCellState = CurrentCellSolveStateEnum.Incremented;
                 }
             }
             else
             {
                 //Init to 1 if never set.
                 cell.CurrentValue = SudokuConstants.MinValue;
-                currentCellState = CurrentCellStateEnum.Initialized;
+                currentCellState = CurrentCellSolveStateEnum.Initialized;
             }
         }
 
@@ -85,12 +85,12 @@ public class BackTrackingSudokuPuzzleSolver : ISudokuPuzzleSolver
     /// <param name="currentCellState">Modification state of the current cell.</param>
     /// <returns>The index of the next cell to modify. Remember that this gets incremented by 1 at the start of the loop.</returns>
     /// <exception cref="OutsideOfPuzzleCellBoundsException">Thrown if an invalid cell position is selected.</exception>
-    private int GetNextCellIndex(SudokuPuzzleCell cell, int currentCellIndex, CurrentCellStateEnum currentCellState)
+    private int GetNextCellIndex(SudokuPuzzleCell cell, int currentCellIndex, CurrentCellSolveStateEnum currentCellState)
     {
         var nextCellIndex = currentCellIndex;
         if (!cell.IsSetAndValid())
         {
-            if (currentCellState == CurrentCellStateEnum.Overflowed)
+            if (currentCellState == CurrentCellSolveStateEnum.Overflowed)
             {
                 // Go back to the previous cell and modify it.
                 nextCellIndex -= 2;
@@ -100,14 +100,14 @@ public class BackTrackingSudokuPuzzleSolver : ISudokuPuzzleSolver
                     throw new OutsideOfPuzzleCellBoundsException();
                 }
             }
-            else if (currentCellState == CurrentCellStateEnum.Incremented ||
-                currentCellState == CurrentCellStateEnum.Initialized)
+            else if (currentCellState == CurrentCellSolveStateEnum.Incremented ||
+                currentCellState == CurrentCellSolveStateEnum.Initialized)
             {
                 // Increment this cell again.
                 nextCellIndex--;
             }
         }
-        else if (!cell.IsSettable && currentCellState == CurrentCellStateEnum.Overflowed)
+        else if (!cell.IsSettable && currentCellState == CurrentCellSolveStateEnum.Overflowed)
         {
             // Go back to the previous cell and increment it.
             nextCellIndex -= 2;
