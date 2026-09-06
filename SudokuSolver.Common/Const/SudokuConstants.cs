@@ -2,7 +2,7 @@
 // Copyright (c) Joe Braught. All rights reserved.
 // </copyright>
 
-namespace SudokuSolver.Console.Const
+namespace SudokuSolver.Common.Const
 {
     /// <summary>
     /// Constants related to a sudoku puzzle.

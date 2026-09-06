@@ -2,9 +2,9 @@
 // Copyright (c) Joe Braught. All rights reserved.
 // </copyright>
 
-using SudokuSolver.Console.Const;
+using SudokuSolver.Common.Const;
 
-namespace SudokuSolver.Console.Helper
+namespace SudokuSolver.Common.Helper
 {
     internal static class CellListValidationHelper
     {

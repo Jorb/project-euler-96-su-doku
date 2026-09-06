@@ -2,16 +2,16 @@
 // Copyright (c) Joe Braught. All rights reserved.
 // </copyright>
 
-using SudokuSolver.Console.Const;
+using SudokuSolver.Common.Const;
 
-namespace SudokuSolver.Console.Helper
+namespace SudokuSolver.Common.Helper
 {
     /// <summary>
     /// Convert a puzzle to a list of strings which match the definition text file.
     /// </summary>
-    internal class PuzzleToStringListHelper
+    public class PuzzleToStringListHelper
     {
-        internal static List<string> BuildFileLinesFromPuzzleRows(SudokuPuzzle puzzle)
+        public static List<string> BuildFileLinesFromPuzzleRows(SudokuPuzzle puzzle)
         {
             var fileLinesFromRows = new List<string>();
             fileLinesFromRows.Add(CreateGridTitle(puzzle.Id));

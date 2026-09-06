@@ -2,12 +2,12 @@
 // Copyright (c) Joe Braught. All rights reserved.
 // </copyright>
 
-using SudokuSolver.Console.Const;
+using SudokuSolver.Common.Const;
 
 /// <summary>
 /// A Sudoku puzzle. 9X9 with 9 boxes.
 /// </summary>
-internal class SudokuPuzzle
+public class SudokuPuzzle
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="SudokuPuzzle"/> class.

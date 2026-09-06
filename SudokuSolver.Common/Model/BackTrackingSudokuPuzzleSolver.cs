@@ -2,16 +2,16 @@
 // Copyright (c) Joe Braught. All rights reserved.
 // </copyright>
 
-using SudokuSolver.Console.Const;
-using SudokuSolver.Console.Helper;
+using SudokuSolver.Common.Const;
+using SudokuSolver.Common.Helper;
 
 /// <summary>
 /// Sudoku puzzle solver using backtracking algorithm.
 /// https://en.wikipedia.org/wiki/Sudoku_solving_algorithms#Backtracking .
 /// </summary>
-internal class BackTrackingSudokuPuzzleSolver : ISudokuPuzzleSolver
+public class BackTrackingSudokuPuzzleSolver : ISudokuPuzzleSolver
 {
-    public void SolvePuzzle(SudokuPuzzle puzzle, bool showLiveView)
+    public void SolvePuzzle(SudokuPuzzle puzzle, bool showLiveView, Action<SudokuPuzzle> showPuzzle)
     {
         var currentCellState = CurrentCellStateEnum.Unknown;
         for (int currentCellIndex = 0; currentCellIndex < puzzle.Cells.Count; currentCellIndex++)
@@ -21,27 +21,30 @@ internal class BackTrackingSudokuPuzzleSolver : ISudokuPuzzleSolver
 
             if (showLiveView)
             {
-                PrintPuzzle(puzzle);
+                showPuzzle(puzzle);
+                // Pause a little so we can see.
+                Thread.Sleep(50);
             }
         }
     }
 
-    public void SolvePuzzles(List<SudokuPuzzle> puzzleList, bool showLiveView)
+    public void SolvePuzzles(List<SudokuPuzzle> puzzleList, bool showLiveView, Action<SudokuPuzzle> showPuzzle)
     {
-        List<Action> solveActions = new List<Action>();
-        //for (int puzzleIndex = 0; puzzleIndex < puzzleList.Count; puzzleIndex++)
-        //{
-        //    solveActions.Add(() => this.SolvePuzzle(puzzleList[puzzleIndex], showLiveView));
-        //    //Console.Write($"Solving puzzle {puzzleIndex + 1}...");
-        //    //this.SolvePuzzle(puzzleList[puzzleIndex], showLiveView);
-        //    //Console.WriteLine("SOLVED");
-        //}
-
-        Parallel.ForEach(puzzleList, puzzle =>
+        if (showLiveView)
         {
-            SolvePuzzle(puzzle, showLiveView);
-            Console.WriteLine($"Solved puzzle {puzzle.Id}...");
-        });
+            for (int puzzleIndex = 0; puzzleIndex < puzzleList.Count; puzzleIndex++)
+            {
+                this.SolvePuzzle(puzzleList[puzzleIndex], showLiveView, showPuzzle);
+            }
+        }
+        else
+        {
+            Parallel.ForEach(puzzleList, puzzle =>
+                {
+                    SolvePuzzle(puzzle, false, showPuzzle);
+                    Console.WriteLine($"Solved puzzle {puzzle.Id}...");
+                });
+        }
     }
 
     private static CurrentCellStateEnum ModifyCurrentCell(CurrentCellStateEnum currentCellState, SudokuPuzzleCell cell)
@@ -72,14 +75,6 @@ internal class BackTrackingSudokuPuzzleSolver : ISudokuPuzzleSolver
         }
 
         return currentCellState;
-    }
-
-    private static void PrintPuzzle(SudokuPuzzle puzzle)
-    {
-        Console.Clear();
-        var puzzleLines = PuzzleToStringListHelper.BuildFileLinesFromPuzzleRows(puzzle);
-        foreach (var puzzleLine in puzzleLines) { Console.WriteLine(puzzleLine); }
-        Thread.Sleep(10);
     }
 
     /// <summary>

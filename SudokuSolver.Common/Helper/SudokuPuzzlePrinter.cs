@@ -2,15 +2,15 @@
 // Copyright (c) Joe Braught. All rights reserved.
 // </copyright>
 
-using SudokuSolver.Console.Helper;
+using SudokuSolver.Common.Helper;
 
-internal class SudokuPuzzlePrinter
+public class SudokuPuzzlePrinter
 {
     public SudokuPuzzlePrinter()
     {
     }
 
-    internal void PrintPuzzlesToFile(List<SudokuPuzzle> puzzleList, string outputPath)
+    public void PrintPuzzlesToFile(List<SudokuPuzzle> puzzleList, string outputPath)
     {
         var fileLines = new List<string>();
         foreach (var puzzle in puzzleList)

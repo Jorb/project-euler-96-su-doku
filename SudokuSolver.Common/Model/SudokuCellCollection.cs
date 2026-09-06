@@ -2,7 +2,7 @@
 // Copyright (c) Joe Braught. All rights reserved.
 // </copyright>
 
-using SudokuSolver.Console.Helper;
+using SudokuSolver.Common.Helper;
 
 /// <summary>
 /// A row, column and box are all just collections of cells.

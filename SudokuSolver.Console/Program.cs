@@ -2,6 +2,8 @@
 // Copyright (c) Joe Braught. All rights reserved.
 // </copyright>
 
+using SudokuSolver.Common.Helper;
+
 Console.WriteLine("Starting Sudoku Solver");
 
 Console.WriteLine("Reading puzzle file");
@@ -16,7 +18,14 @@ Console.WriteLine("Show live solving? (y/n)");
 var showLive = Console.ReadKey().Key.Equals(ConsoleKey.Y);
 
 Console.WriteLine("Solving puzzles");
-puzzleSolver.SolvePuzzles(puzzleList, showLive);
+puzzleSolver.SolvePuzzles(puzzleList, showLive, PrintPuzzle);
+
+void PrintPuzzle(SudokuPuzzle puzzle)
+{
+    Console.Clear();
+    var puzzleLines = PuzzleToStringListHelper.BuildFileLinesFromPuzzleRows(puzzle);
+    foreach (var puzzleLine in puzzleLines) { Console.WriteLine(puzzleLine); }
+}
 
 var puzzlePrinter = new SudokuPuzzlePrinter();
 

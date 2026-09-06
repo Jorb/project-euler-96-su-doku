@@ -2,12 +2,12 @@
 // Copyright (c) Joe Braught. All rights reserved.
 // </copyright>
 
-using SudokuSolver.Console.Helper;
+using SudokuSolver.Common.Helper;
 
 /// <summary>
 /// Builds puzzle in-memory objects by deserialzing a puzzle file.
 /// </summary>
-internal class SudokuPuzzleFactory
+public class SudokuPuzzleFactory
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="SudokuPuzzleFactory"/> class.

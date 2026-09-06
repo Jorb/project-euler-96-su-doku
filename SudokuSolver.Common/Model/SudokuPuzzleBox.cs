@@ -2,7 +2,7 @@
 // Copyright (c) Joe Braught. All rights reserved.
 // </copyright>
 
-using SudokuSolver.Console.Const;
+using SudokuSolver.Common.Const;
 
 /// <summary>
 /// A box element of the sudoku puzzle (3x3 sub grid of the puzzle).

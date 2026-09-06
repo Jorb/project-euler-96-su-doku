@@ -25,6 +25,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SudokuSolver.Common\SudokuSolver.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="sudoku.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

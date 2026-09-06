@@ -2,7 +2,7 @@
 // Copyright (c) Joe Braught. All rights reserved.
 // </copyright>
 
-using SudokuSolver.Console.Const;
+using SudokuSolver.Common.Const;
 
 /// <summary>
 /// An individual cell of a sudoku puzzle.
