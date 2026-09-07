@@ -4,12 +4,23 @@
 
 using SudokuSolver.Common.Helper;
 
+/// <summary>
+/// Print in-memory sudoku puzzles to serialized file.
+/// </summary>
 public class SudokuPuzzlePrinter
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="SudokuPuzzlePrinter"/> class.
+    /// </summary>
     public SudokuPuzzlePrinter()
     {
     }
 
+    /// <summary>
+    /// Print a list of puzzles to a file in the same format as the definition file.
+    /// </summary>
+    /// <param name="puzzleList">List of puzzles to print.</param>
+    /// <param name="outputPath">Output path of the puzzle file.</param>
     public void PrintPuzzlesToFile(List<SudokuPuzzle> puzzleList, string outputPath)
     {
         var fileLines = new List<string>();

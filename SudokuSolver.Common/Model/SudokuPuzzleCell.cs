@@ -47,12 +47,12 @@ internal class SudokuPuzzleCell
     public SudokuPuzzleBox? ParentBox { get; private set; }
 
     /// <summary>
-    /// The current value of the cell.
+    /// Gets or sets the current value of the cell.
     /// </summary>
     public int? CurrentValue { get => this.currentValue; set => this.SetValue(value); }
 
     /// <summary>
-    /// If the initial value is null, then that means a value can be set.
+    /// Gets a value indicating whether the initial value is null, then that means a value can be set.
     /// </summary>
     public bool IsSettable { get => this.initialValue is null; }
 
@@ -136,7 +136,7 @@ internal class SudokuPuzzleCell
         else
         {
             // Be explicit, the solver should not be setting values it's not supposed to touch.
-            throw new AttemptedToSetUnSettableRowException();
+            throw new AttemptedToSetUnSettableCellException();
         }
     }
 
@@ -168,7 +168,7 @@ internal class SudokuPuzzleCell
         // Don't allow nulls to be set after init. Call ClearValue if the cell needs to be cleared.
         if (cellValue is null || cellValue < SudokuConstants.MinValue || cellValue > SudokuConstants.MaxValue)
         {
-            throw new InvalidSudokuCellValueException(cellValue);
+            throw new InvalidSudokuCellValueException();
         }
     }
 }

@@ -11,7 +11,8 @@ internal class SudokuPuzzleRow : SudokuCellCollection
     /// Initializes a new instance of the <see cref="SudokuPuzzleRow"/> class.
     /// Build an instance of a row from a string.
     /// </summary>
-    /// <param name="line">Line of integers read from file.</param>
+    /// <param name="line">Line read from puzzle definition file.</param>
+    /// <param name="index">Index of the row in the sudoku puzzle.</param>
     /// <exception cref="InvalidSudokuInitialCellCharException">Throw exception if the char cannot be parsed as an int between 1 and 9.</exception>
     public SudokuPuzzleRow(string line, int index)
     {
@@ -23,7 +24,6 @@ internal class SudokuPuzzleRow : SudokuCellCollection
             {
                 var newCell = new SudokuPuzzleCell(cellInt, this);
                 this.Cells.Add(newCell);
-                //newCell.CellValueChanged += CellValueChanged;
             }
             else
             {
@@ -33,7 +33,7 @@ internal class SudokuPuzzleRow : SudokuCellCollection
     }
 
     /// <summary>
-    /// The index of the row in the puzzle.
+    /// Gets the index of the row in the puzzle.
     /// 0 is top row, 9 is bottom row.
     /// </summary>
     public int Index { get; }

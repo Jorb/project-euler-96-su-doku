@@ -6,6 +6,10 @@ namespace SudokuSolver.Common.Helper
 {
     using SudokuSolver.Common.Const;
 
+    /// <summary>
+    /// Helpers for validating sudoku puzzle cells.
+    /// Check if cells are completed and valid for rows, columns, boxes.
+    /// </summary>
     internal static class CellListValidationHelper
     {
         /// <summary>

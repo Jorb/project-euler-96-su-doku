@@ -23,7 +23,7 @@ internal class SudokuPuzzleColumn : SudokuCellCollection
     }
 
     /// <summary>
-    /// Index of the column in the puzzle.
+    /// Gets index of the column in the puzzle.
     /// 0 is left most column, 9 is rightmost.
     /// </summary>
     public int Index { get; }
