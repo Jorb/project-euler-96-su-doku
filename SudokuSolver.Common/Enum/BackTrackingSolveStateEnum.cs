@@ -5,7 +5,7 @@
 /// <summary>
 /// States of the cell while solving.
 /// </summary>
-internal enum CurrentCellSolveStateEnum
+internal enum BackTrackingSolveStateEnum
 {
     /// <summary>
     /// Nothing has happened, no known state.

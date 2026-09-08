@@ -51,6 +51,8 @@ internal class SudokuPuzzleCell
     /// </summary>
     public int? CurrentValue { get => this.currentValue; set => this.SetValue(value); }
 
+    public bool HasBeenModified { get; private set; } = false;
+
     /// <summary>
     /// Gets a value indicating whether the initial value is null, then that means a value can be set.
     /// </summary>
@@ -60,6 +62,11 @@ internal class SudokuPuzzleCell
     /// If a value has been set in this cell.
     /// </summary>
     public bool IsSet { get => this.CurrentValue is not null; }
+
+    /// <summary>
+    /// Marked as locked so it cannot be modified.
+    /// </summary>
+    public bool IsLocked { get; private set; }
 
     /// <summary>
     /// Clear the cell value. Remove the number that was entered.
@@ -132,6 +139,7 @@ internal class SudokuPuzzleCell
             CheckValueValidity(value);
 
             this.currentValue = value;
+            this.HasBeenModified = true;
         }
         else
         {
@@ -170,5 +178,21 @@ internal class SudokuPuzzleCell
         {
             throw new InvalidSudokuCellValueException();
         }
+    }
+
+    internal List<int> GetPossibleValues()
+    {
+        var boxPossibleValues = ParentBox.GetPossibleValues();
+        var rowPossibleValues = ParentRow.GetPossibleValues();
+        var columnPossibleValues = ParentColumn.GetPossibleValues();
+        return rowPossibleValues.Intersect(boxPossibleValues).Intersect(columnPossibleValues).Order().ToList();
+    }
+
+    /// <summary>
+    /// Lock this cell so it cannot be set again.
+    /// </summary>
+    internal void Lock()
+    {
+        IsLocked = true;
     }
 }

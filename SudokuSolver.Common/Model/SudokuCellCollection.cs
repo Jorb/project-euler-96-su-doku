@@ -30,4 +30,18 @@ internal class SudokuCellCollection
     /// Gets a value indicating whether all cells are completed (contain a number from 1 to 9) and all of the values are valid (no duplicates.)
     /// </summary>
     public bool IsCompleteAndValid { get => this.IsComplete && this.IsValid; }
+
+    internal List<int> GetPossibleValues()
+    {
+        List<int> possibleValues = new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+        foreach (var cell in this.Cells)
+        {
+            if (cell.IsSet)
+            {
+                possibleValues.Remove((int)cell.CurrentValue);
+            }
+        }
+
+        return possibleValues;
+    }
 }

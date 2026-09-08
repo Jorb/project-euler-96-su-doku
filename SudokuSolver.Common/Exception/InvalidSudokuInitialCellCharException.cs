@@ -20,7 +20,7 @@ internal class InvalidSudokuInitialCellCharException : Exception
     /// <summary>
     /// Initializes a new instance of the <see cref="InvalidSudokuInitialCellCharException"/> class.
     /// </summary>
-    /// <param name="cellValue"></param>
+    /// <param name="cellValue">The invalid char.</param>
     public InvalidSudokuInitialCellCharException(char cellValue)
     {
         this.cellValue = cellValue;

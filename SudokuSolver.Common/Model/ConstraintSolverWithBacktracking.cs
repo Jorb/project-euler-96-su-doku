@@ -1,4 +1,4 @@
-﻿// <copyright file="BackTrackingSudokuPuzzleSolver.cs" company="Joe Braught">
+﻿// <copyright file="ConstraintSolverWithBacktracking.cs" company="Joe Braught">
 // Copyright (c) Joe Braught. All rights reserved.
 // </copyright>
 
@@ -6,23 +6,41 @@ using SudokuSolver.Common.Const;
 using SudokuSolver.Common.Helper;
 
 /// <summary>
-/// Sudoku puzzle solver using backtracking algorithm.
-/// https://en.wikipedia.org/wiki/Sudoku_solving_algorithms#Backtracking .
+/// Joe's attempt at improving the backtracking solver by constraining the values in real time.
+/// Does a first pass to find all of the cells with single possibilities first.
 /// </summary>
-public class BackTrackingSudokuPuzzleSolver : ISudokuPuzzleSolver
+public class ConstraintSolverWithBacktracking : ISudokuPuzzleSolver
 {
-    /// <summary>
-    /// Solve the sudoku puzzle using the backtracking sudoku algorithm.
-    /// </summary>
-    /// <param name="puzzle">The puzzle to solve.</param>
-    /// <param name="showLiveView">Whether or not to show the live view of puzzle solver.</param>
-    /// <param name="showPuzzle">The delegate to show the puzzle in the UI.</param>
     public void SolvePuzzle(SudokuPuzzle puzzle, bool showLiveView, Action<SudokuPuzzle> showPuzzle)
     {
-        var currentCellState = BackTrackingSolveStateEnum.Unknown;
-        for (int currentCellIndex = 0; currentCellIndex < puzzle.Cells.Count; currentCellIndex++)
+        List<SudokuPuzzleCell> settableCells = puzzle.Cells.Where(cell => cell.IsSettable).ToList();
+
+        // First pass set all single possibilities.
+        foreach (var cell in settableCells)
         {
-            currentCellState = ModifyCurrentCell(currentCellState, puzzle.Cells[currentCellIndex]);
+            if (cell.IsLocked)
+            {
+                continue;
+            }
+
+            List<int> possibleValues = cell.GetPossibleValues();
+            if (possibleValues.Count == 1)
+            {
+                cell.CurrentValue = possibleValues[0];
+                cell.Lock();
+                if (showLiveView)
+                {
+                    showPuzzle(puzzle);
+                }
+            }
+        }
+
+        settableCells = puzzle.Cells.Where(cell => cell.IsSettable && !cell.IsLocked).ToList();
+        var currentCellState = BackTrackingSolveStateEnum.Unknown;
+        for (int currentCellIndex = 0; currentCellIndex < settableCells.Count(); currentCellIndex++)
+        {
+            var cell = settableCells[currentCellIndex];
+            currentCellState = ModifyCurrentCell(currentCellState, cell);
             currentCellIndex = GetNextCellIndex(puzzle.Cells[currentCellIndex], currentCellIndex, currentCellState);
 
             if (showLiveView)
@@ -34,12 +52,6 @@ public class BackTrackingSudokuPuzzleSolver : ISudokuPuzzleSolver
         }
     }
 
-    /// <summary>
-    /// Solve all of the puzzles in the list using the backtracking sudoku solver.
-    /// </summary>
-    /// <param name="puzzleList">The list of puzzles to solve.</param>
-    /// <param name="showLiveView">Whether or not to show the puzzle as it is being solved.</param>
-    /// <param name="showPuzzle">The delegate to show the puzzle in the UI.</param>
     public void SolvePuzzles(List<SudokuPuzzle> puzzleList, bool showLiveView, Action<SudokuPuzzle> showPuzzle)
     {
         if (showLiveView)
@@ -53,44 +65,45 @@ public class BackTrackingSudokuPuzzleSolver : ISudokuPuzzleSolver
         {
             Parallel.ForEach(puzzleList, puzzle =>
                 {
-                    try
-                    {
-                        SolvePuzzle(puzzle, false, showPuzzle);
-                        Console.WriteLine($"Solved puzzle {puzzle.Id}...");
-                    }
-                    catch (OutsideOfPuzzleCellBoundsException)
-                    {
-                        Console.WriteLine($"INVALID puzzle {puzzle.Id}...");
-                    }
+                    SolvePuzzle(puzzle, false, showPuzzle);
+                    Console.WriteLine($"Solved puzzle {puzzle.Id}...");
                 });
         }
     }
 
     private static BackTrackingSolveStateEnum ModifyCurrentCell(BackTrackingSolveStateEnum currentCellState, SudokuPuzzleCell cell)
     {
-        if (cell.IsSettable)
+        // Get the value of the current cell.
+        var currentValue = cell.CurrentValue;
+
+        // Clear the value so we can get all possible options
+        cell.ClearValue();
+
+        // Get all the possible options.
+        var possibleValues = cell.GetPossibleValues();
+
+        if (possibleValues.Count == 0)
         {
-            if (cell.IsSet)
-            {
-                if (cell.CurrentValue == SudokuConstants.MaxValue)
-                {
-                    //Clear the value and go back to the previous sibling;
-                    cell.ClearValue();
-                    currentCellState = BackTrackingSolveStateEnum.Overflowed;
-                }
-                else
-                {
-                    // Increment if less than 9.
-                    cell.CurrentValue++;
-                    currentCellState = BackTrackingSolveStateEnum.Incremented;
-                }
-            }
-            else
-            {
-                //Init to 1 if never set.
-                cell.CurrentValue = SudokuConstants.MinValue;
-                currentCellState = BackTrackingSolveStateEnum.Initialized;
-            }
+            // If there are no possible values then we have overflowed.
+            currentCellState = BackTrackingSolveStateEnum.Overflowed;
+        }
+        else if (cell.CurrentValue is null && currentCellState != BackTrackingSolveStateEnum.Overflowed)
+        {
+            // If the currentValue is empty (null), set it to the first possible value.
+            cell.CurrentValue = possibleValues[0];
+            currentCellState = BackTrackingSolveStateEnum.Initialized;
+        }
+        else if (currentValue == possibleValues.Last())
+        {
+            // If we have already assigned the last possible value, we need to clear the current value and increment the previous.
+            currentCellState = BackTrackingSolveStateEnum.Overflowed;
+        }
+        else
+        {
+            // If there is a possible value larger than the current value, assign it.
+            var nextIndex = possibleValues.IndexOf((int)currentValue) + 1;
+            cell.CurrentValue = possibleValues[nextIndex];
+            currentCellState = BackTrackingSolveStateEnum.Incremented;
         }
 
         return currentCellState;
@@ -126,7 +139,7 @@ public class BackTrackingSudokuPuzzleSolver : ISudokuPuzzleSolver
                 nextCellIndex--;
             }
         }
-        else if (!cell.IsSettable && currentCellState == BackTrackingSolveStateEnum.Overflowed)
+        else if (currentCellState == BackTrackingSolveStateEnum.Overflowed)
         {
             // Go back to the previous cell and increment it.
             nextCellIndex -= 2;

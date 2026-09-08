@@ -3,7 +3,7 @@
 // </copyright>
 
 [Serializable]
-internal class OutsideOfPuzzleCellBoundsException : Exception
+public class OutsideOfPuzzleCellBoundsException : Exception
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="OutsideOfPuzzleCellBoundsException"/> class.

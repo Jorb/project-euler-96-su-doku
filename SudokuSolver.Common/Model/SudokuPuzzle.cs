@@ -61,6 +61,13 @@ public class SudokuPuzzle
         }
     }
 
+    public bool IsSolved { get => GetIsSolved(); }
+
+    private bool GetIsSolved()
+    {
+        return !Cells.Any(cell => cell.IsSetAndValid() == false);
+    }
+
     /// <summary>
     /// Gets the Id of the puzzle. Corresponds the the grid number in the file.
     /// </summary>
@@ -131,5 +138,19 @@ public class SudokuPuzzle
         {
             throw new CellParentsNotInitializedException();
         }
+    }
+
+    internal int GetInvalidCellCount()
+    {
+        return Cells.Where(cell => cell.IsSetAndValid() == false).Count();
+    }
+
+    internal int GetErrorCount()
+    {
+        var rowErrors = Rows.Where(row => !row.IsCompleteAndValid).Count();
+        var columnErrors = Rows.Where(col => !col.IsCompleteAndValid).Count();
+        var boxErrors = Rows.Where(box => !box.IsCompleteAndValid).Count();
+
+        return rowErrors + columnErrors + boxErrors;
     }
 }
