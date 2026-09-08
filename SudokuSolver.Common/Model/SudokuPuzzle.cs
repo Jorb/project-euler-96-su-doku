@@ -13,6 +13,7 @@ public class SudokuPuzzle
     /// Initializes a new instance of the <see cref="SudokuPuzzle"/> class.
     /// Build a sudoku puzzle object from raw string lines as they come from the puzzle definition file.
     /// </summary>
+    /// <param name="id">Id of the puzzle (aka grid # in the definition file.)</param>
     /// <param name="puzzleLines">String lines read from file.</param>
     public SudokuPuzzle(int id, List<string> puzzleLines)
     {
@@ -44,7 +45,7 @@ public class SudokuPuzzle
         }
 
         // Link the rows and columns to boxes
-        //Build the box objects.
+        // Build the box objects.
         for (int boxIndex = 0; boxIndex < SudokuConstants.BoxRowsPerPuzzle * SudokuConstants.BoxColumnsPerPuzzle; boxIndex++)
         {
             int columnIndex = boxIndex / 3;
@@ -61,11 +62,14 @@ public class SudokuPuzzle
         }
     }
 
-    public bool IsSolved { get => GetIsSolved(); }
+    /// <summary>
+    /// Gets a value indicating whether the puzzle is solved.
+    /// </summary>
+    public bool IsSolved { get => this.GetIsSolved(); }
 
     private bool GetIsSolved()
     {
-        return !Cells.Any(cell => cell.IsSetAndValid() == false);
+        return !this.Cells.Any(cell => cell.IsSetAndValid() == false);
     }
 
     /// <summary>
@@ -138,19 +142,5 @@ public class SudokuPuzzle
         {
             throw new CellParentsNotInitializedException();
         }
-    }
-
-    internal int GetInvalidCellCount()
-    {
-        return Cells.Where(cell => cell.IsSetAndValid() == false).Count();
-    }
-
-    internal int GetErrorCount()
-    {
-        var rowErrors = Rows.Where(row => !row.IsCompleteAndValid).Count();
-        var columnErrors = Rows.Where(col => !col.IsCompleteAndValid).Count();
-        var boxErrors = Rows.Where(box => !box.IsCompleteAndValid).Count();
-
-        return rowErrors + columnErrors + boxErrors;
     }
 }

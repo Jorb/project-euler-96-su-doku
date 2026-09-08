@@ -26,7 +26,7 @@ public class SudokuPuzzlePrinter
         var fileLines = new List<string>();
         foreach (var puzzle in puzzleList)
         {
-            //Convert the puzzle back into the file format using the rows objects
+            // Convert the puzzle back into the file format using the rows objects
             fileLines.AddRange(PuzzleToStringListHelper.BuildFileLinesFromPuzzleRows(puzzle));
         }
 

@@ -1,4 +1,4 @@
-﻿// <copyright file="CurrentCellSolveStateEnum.cs" company="Joe Braught">
+﻿// <copyright file="BackTrackingSolveStateEnum.cs" company="Joe Braught">
 // Copyright (c) Joe Braught. All rights reserved.
 // </copyright>
 

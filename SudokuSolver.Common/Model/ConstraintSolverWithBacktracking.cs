@@ -11,6 +11,12 @@ using SudokuSolver.Common.Helper;
 /// </summary>
 public class ConstraintSolverWithBacktracking : ISudokuPuzzleSolver
 {
+    /// <summary>
+    /// Solve the sudoku puzzle using the constraint solver with backtracking.
+    /// </summary>
+    /// <param name="puzzle">The sudoku puzzle to solve.</param>
+    /// <param name="showLiveView">Whether or not to show the live puzzle being solved.</param>
+    /// <param name="showPuzzle">The delegate to show the puzzle in the UI.</param>
     public void SolvePuzzle(SudokuPuzzle puzzle, bool showLiveView, Action<SudokuPuzzle> showPuzzle)
     {
         List<SudokuPuzzleCell> settableCells = puzzle.Cells.Where(cell => cell.IsSettable).ToList();
@@ -41,17 +47,24 @@ public class ConstraintSolverWithBacktracking : ISudokuPuzzleSolver
         {
             var cell = settableCells[currentCellIndex];
             currentCellState = ModifyCurrentCell(currentCellState, cell);
-            currentCellIndex = GetNextCellIndex(puzzle.Cells[currentCellIndex], currentCellIndex, currentCellState);
+            currentCellIndex = this.GetNextCellIndex(puzzle.Cells[currentCellIndex], currentCellIndex, currentCellState);
 
             if (showLiveView)
             {
                 showPuzzle(puzzle);
+
                 // Pause a little so we can see.
                 Thread.Sleep(50);
             }
         }
     }
 
+    /// <summary>
+    /// Solve the sudoku puzzles using the constraint solver with backtracking.
+    /// </summary>
+    /// <param name="puzzleList">List of puzzles to solve.</param>
+    /// <param name="showLiveView">Whether or not to show the live puzzle being solved.</param>
+    /// <param name="showPuzzle">The delegate to show the puzzle in the UI.</param>
     public void SolvePuzzles(List<SudokuPuzzle> puzzleList, bool showLiveView, Action<SudokuPuzzle> showPuzzle)
     {
         if (showLiveView)
@@ -65,7 +78,7 @@ public class ConstraintSolverWithBacktracking : ISudokuPuzzleSolver
         {
             Parallel.ForEach(puzzleList, puzzle =>
                 {
-                    SolvePuzzle(puzzle, false, showPuzzle);
+                    this.SolvePuzzle(puzzle, false, showPuzzle);
                     Console.WriteLine($"Solved puzzle {puzzle.Id}...");
                 });
         }
@@ -100,6 +113,11 @@ public class ConstraintSolverWithBacktracking : ISudokuPuzzleSolver
         }
         else
         {
+            if (currentValue is null)
+            {
+                throw new ConstraintSolverEncounteredUnexpectedNullCell();
+            }
+
             // If there is a possible value larger than the current value, assign it.
             var nextIndex = possibleValues.IndexOf((int)currentValue) + 1;
             cell.CurrentValue = possibleValues[nextIndex];

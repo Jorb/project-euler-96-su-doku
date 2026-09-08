@@ -38,6 +38,7 @@ internal class SudokuPuzzleBox : SudokuCellCollection
     internal List<SudokuPuzzleCell> GetInnerRowCells(int innerBoxRow)
     {
         var rowCells = new List<SudokuPuzzleCell>();
+
         // Cells are not stored in columns and rows in this object. We have to derive that.
         int startCell = innerBoxRow * SudokuConstants.BoxInnerRows;
 

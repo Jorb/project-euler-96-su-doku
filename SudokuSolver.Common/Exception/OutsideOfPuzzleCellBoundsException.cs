@@ -2,6 +2,9 @@
 // Copyright (c) Joe Braught. All rights reserved.
 // </copyright>
 
+/// <summary>
+/// Thrown if an index outside of the puzzle is accessed.
+/// </summary>
 [Serializable]
 public class OutsideOfPuzzleCellBoundsException : Exception
 {

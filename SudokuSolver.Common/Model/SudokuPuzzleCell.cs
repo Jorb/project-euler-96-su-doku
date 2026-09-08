@@ -51,20 +51,18 @@ internal class SudokuPuzzleCell
     /// </summary>
     public int? CurrentValue { get => this.currentValue; set => this.SetValue(value); }
 
-    public bool HasBeenModified { get; private set; } = false;
-
     /// <summary>
     /// Gets a value indicating whether the initial value is null, then that means a value can be set.
     /// </summary>
     public bool IsSettable { get => this.initialValue is null; }
 
     /// <summary>
-    /// If a value has been set in this cell.
+    /// Gets a value indicating whether a value has been set in this cell.
     /// </summary>
     public bool IsSet { get => this.CurrentValue is not null; }
 
     /// <summary>
-    /// Marked as locked so it cannot be modified.
+    /// Gets a value indicating whether the cell is locked so it cannot be modified.
     /// </summary>
     public bool IsLocked { get; private set; }
 
@@ -139,7 +137,6 @@ internal class SudokuPuzzleCell
             CheckValueValidity(value);
 
             this.currentValue = value;
-            this.HasBeenModified = true;
         }
         else
         {
@@ -180,11 +177,18 @@ internal class SudokuPuzzleCell
         }
     }
 
+    /// <summary>
+    /// Analyzes the puzzle to get the list of all possible valid values for this cell.
+    /// </summary>
+    /// <returns>A list of all possible valid values for this cell.</returns>
     internal List<int> GetPossibleValues()
     {
-        var boxPossibleValues = ParentBox.GetPossibleValues();
-        var rowPossibleValues = ParentRow.GetPossibleValues();
-        var columnPossibleValues = ParentColumn.GetPossibleValues();
+        // Check for nulls
+        this.ThrowIfNotInitialized();
+
+        var boxPossibleValues = this.ParentBox.GetPossibleValues();
+        var rowPossibleValues = this.ParentRow.GetPossibleValues();
+        var columnPossibleValues = this.ParentColumn.GetPossibleValues();
         return rowPossibleValues.Intersect(boxPossibleValues).Intersect(columnPossibleValues).Order().ToList();
     }
 
@@ -193,6 +197,6 @@ internal class SudokuPuzzleCell
     /// </summary>
     internal void Lock()
     {
-        IsLocked = true;
+        this.IsLocked = true;
     }
 }

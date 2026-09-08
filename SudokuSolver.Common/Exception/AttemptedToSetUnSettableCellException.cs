@@ -1,4 +1,4 @@
-﻿// <copyright file="AttemptedToSetUnSettableRowException.cs" company="Joe Braught">
+﻿// <copyright file="AttemptedToSetUnSettableCellException.cs" company="Joe Braught">
 // Copyright (c) Joe Braught. All rights reserved.
 // </copyright>
 

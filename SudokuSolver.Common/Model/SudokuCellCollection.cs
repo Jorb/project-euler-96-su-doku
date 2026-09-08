@@ -31,12 +31,16 @@ internal class SudokuCellCollection
     /// </summary>
     public bool IsCompleteAndValid { get => this.IsComplete && this.IsValid; }
 
+    /// <summary>
+    /// Analyzes the puzzle and gets a list of the possible values for this cell.
+    /// </summary>
+    /// <returns>The list of possible valid values for this cell.</returns>
     internal List<int> GetPossibleValues()
     {
         List<int> possibleValues = new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
         foreach (var cell in this.Cells)
         {
-            if (cell.IsSet)
+            if (cell.IsSet && cell.CurrentValue is not null)
             {
                 possibleValues.Remove((int)cell.CurrentValue);
             }

@@ -5,8 +5,6 @@
 using SudokuSolver.Common.Helper;
 using System.Diagnostics;
 
-ISudokuPuzzleSolver puzzleSolver;
-
 Console.WriteLine("Starting Sudoku Solver");
 
 Console.WriteLine("Reading puzzle file");
@@ -15,7 +13,7 @@ var puzzleFactory = new SudokuPuzzleFactory();
 Console.WriteLine("Building puzzle objects");
 var puzzleList = puzzleFactory.BuildAllPuzzlesFromFile("sudoku.txt");
 
-puzzleSolver = SelectSolver();
+ISudokuPuzzleSolver puzzleSolver = SelectSolver();
 
 Console.WriteLine("Show live solving? (y/n)");
 var showLive = Console.ReadKey().Key.Equals(ConsoleKey.Y);
@@ -39,7 +37,10 @@ void PrintPuzzle(SudokuPuzzle puzzle)
 {
     Console.Clear();
     var puzzleLines = PuzzleToStringListHelper.BuildFileLinesFromPuzzleRows(puzzle);
-    foreach (var puzzleLine in puzzleLines) { Console.WriteLine(puzzleLine); }
+    foreach (var puzzleLine in puzzleLines)
+    {
+        Console.WriteLine(puzzleLine);
+    }
 }
 
 static ISudokuPuzzleSolver SelectSolver()

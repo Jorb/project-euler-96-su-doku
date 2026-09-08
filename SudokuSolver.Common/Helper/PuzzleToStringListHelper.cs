@@ -107,7 +107,7 @@ namespace SudokuSolver.Common.Helper
         /// <returns>The cell value as a string.</returns>
         private static string ConvertCellToFileStringValue(SudokuPuzzleCell cell)
         {
-            if (cell.CurrentValue?.ToString() is not null)
+            if (cell.CurrentValue is not null)
             {
                 return cell.CurrentValue.ToString();
             }

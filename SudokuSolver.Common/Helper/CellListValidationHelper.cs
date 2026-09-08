@@ -33,7 +33,7 @@ namespace SudokuSolver.Common.Helper
             var valid = true;
             for (int validNumber = SudokuConstants.MinValue; validNumber <= SudokuConstants.MaxValue; validNumber++)
             {
-                //Check if any numbers are duplicated.
+                // Check if any numbers are duplicated.
                 var duplicates = cells.Where(cell => cell.CurrentValue == validNumber).ToList();
                 if (duplicates.Count() > 1)
                 {

@@ -23,11 +23,12 @@ public class BackTrackingSudokuPuzzleSolver : ISudokuPuzzleSolver
         for (int currentCellIndex = 0; currentCellIndex < puzzle.Cells.Count; currentCellIndex++)
         {
             currentCellState = ModifyCurrentCell(currentCellState, puzzle.Cells[currentCellIndex]);
-            currentCellIndex = GetNextCellIndex(puzzle.Cells[currentCellIndex], currentCellIndex, currentCellState);
+            currentCellIndex = this.GetNextCellIndex(puzzle.Cells[currentCellIndex], currentCellIndex, currentCellState);
 
             if (showLiveView)
             {
                 showPuzzle(puzzle);
+
                 // Pause a little so we can see.
                 Thread.Sleep(50);
             }
@@ -55,7 +56,7 @@ public class BackTrackingSudokuPuzzleSolver : ISudokuPuzzleSolver
                 {
                     try
                     {
-                        SolvePuzzle(puzzle, false, showPuzzle);
+                        this.SolvePuzzle(puzzle, false, showPuzzle);
                         Console.WriteLine($"Solved puzzle {puzzle.Id}...");
                     }
                     catch (OutsideOfPuzzleCellBoundsException)
@@ -74,7 +75,7 @@ public class BackTrackingSudokuPuzzleSolver : ISudokuPuzzleSolver
             {
                 if (cell.CurrentValue == SudokuConstants.MaxValue)
                 {
-                    //Clear the value and go back to the previous sibling;
+                    // Clear the value and go back to the previous sibling;
                     cell.ClearValue();
                     currentCellState = BackTrackingSolveStateEnum.Overflowed;
                 }
@@ -87,7 +88,7 @@ public class BackTrackingSudokuPuzzleSolver : ISudokuPuzzleSolver
             }
             else
             {
-                //Init to 1 if never set.
+                // Init to 1 if never set.
                 cell.CurrentValue = SudokuConstants.MinValue;
                 currentCellState = BackTrackingSolveStateEnum.Initialized;
             }
