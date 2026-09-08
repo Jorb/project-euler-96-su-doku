@@ -1,0 +1,183 @@
+<Window x:Class="SudokuSolver.Wpf.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:conv="clr-namespace:SudokuSolver.Wpf.Converters"
+        xmlns:models="clr-namespace:SudokuSolver.Wpf.Models"
+        xmlns:views="clr-namespace:SudokuSolver.Wpf.Views"
+        xmlns:vm="clr-namespace:SudokuSolver.Wpf.ViewModels"
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance Type=vm:MainViewModel}"
+        Title="Sudoku Solver — Performance Comparison" Height="760" Width="1180"
+        WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+        <conv:SolverKindDisplayNameConverter x:Key="SolverKindDisplayName" />
+
+        <!-- Colours the status text without needing a converter. -->
+        <Style x:Key="StatusTextStyle" TargetType="TextBlock">
+            <Setter Property="Margin" Value="6,2" />
+            <Setter Property="Foreground" Value="{StaticResource MutedBrush}" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=Text, RelativeSource={RelativeSource Self}}" Value="Solved">
+                    <Setter Property="Foreground" Value="{StaticResource SolvedStatusBrush}" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=Text, RelativeSource={RelativeSource Self}}" Value="Failed">
+                    <Setter Property="Foreground" Value="{StaticResource FailedStatusBrush}" />
+                    <Setter Property="FontWeight" Value="SemiBold" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=Text, RelativeSource={RelativeSource Self}}" Value="Running">
+                    <Setter Property="Foreground" Value="{StaticResource RunningStatusBrush}" />
+                    <Setter Property="FontWeight" Value="SemiBold" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <DockPanel Margin="12">
+
+        <!-- Toolbar -->
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,0,0,10">
+            <Button Content="{Binding RunButtonLabel}" Command="{Binding RunCommand}"
+                    Style="{StaticResource ToolbarButtonStyle}" MinWidth="140" FontWeight="SemiBold" />
+            <Button Content="Stop" Command="{Binding StopCommand}" Style="{StaticResource ToolbarButtonStyle}"
+                    ToolTip="Stops between puzzles. The library cannot interrupt a solve already in progress, so the current puzzle finishes first." />
+            <Button Content="Reset" Command="{Binding ResetCommand}" Style="{StaticResource ToolbarButtonStyle}"
+                    ToolTip="Clears all results and reloads the puzzles from sudoku.txt." />
+
+            <Border Width="1" Background="{StaticResource GridLineBrush}" Margin="8,2" />
+
+            <Button Content="Export backtracking..." Style="{StaticResource ToolbarButtonStyle}" MinWidth="160"
+                    Command="{Binding ExportCommand}"
+                    CommandParameter="{x:Static models:SolverKind.BackTracking}" />
+            <Button Content="Export constraint..." Style="{StaticResource ToolbarButtonStyle}" MinWidth="150"
+                    Command="{Binding ExportCommand}"
+                    CommandParameter="{x:Static models:SolverKind.ConstraintWithBacktracking}" />
+
+            <Border Width="1" Background="{StaticResource GridLineBrush}" Margin="8,2" />
+
+            <CheckBox Content="Live view" IsChecked="{Binding IsLiveViewEnabled}" VerticalAlignment="Center"
+                      IsEnabled="{Binding IsRunning, Converter={x:Static conv:InverseBooleanConverter.Instance}}"
+                      ToolTip="Animates the selected puzzle only. The library sleeps 50ms per step, so timings from an animated run are not comparable." />
+            <TextBlock Text="Animate solver:" VerticalAlignment="Center" Margin="14,0,6,0" />
+            <ComboBox ItemsSource="{Binding SolverKinds}" SelectedItem="{Binding LiveViewSolver}"
+                      VerticalAlignment="Center" MinWidth="140"
+                      IsEnabled="{Binding IsLiveViewEnabled}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Converter={StaticResource SolverKindDisplayName}}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+        </StackPanel>
+
+        <!-- Footer: totals -->
+        <Border DockPanel.Dock="Bottom" Background="#F4F4F4" BorderBrush="{StaticResource GridLineBrush}"
+                BorderThickness="1" Padding="10,8" Margin="0,10,0,0">
+            <StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Backtracking total:" FontWeight="SemiBold" />
+                    <TextBlock Text="{Binding BackTrackingTotalMilliseconds, StringFormat={}{0:N1} ms}" Margin="6,0,20,0" />
+
+                    <TextBlock Text="Constraint total:" FontWeight="SemiBold" />
+                    <TextBlock Text="{Binding ConstraintTotalMilliseconds, StringFormat={}{0:N1} ms}" Margin="6,0,20,0" />
+
+                    <TextBlock Text="Overall speedup:" FontWeight="SemiBold" />
+                    <TextBlock Text="{Binding OverallSpeedup, StringFormat={}{0:N2}×, TargetNullValue=—}" Margin="6,0,20,0" />
+
+                    <TextBlock Text="Solved:" FontWeight="SemiBold" />
+                    <TextBlock Text="{Binding SolvedCount}" Margin="6,0,20,0"
+                               Foreground="{StaticResource SolvedStatusBrush}" />
+
+                    <TextBlock Text="Failed:" FontWeight="SemiBold" />
+                    <TextBlock Text="{Binding FailedCount}" Margin="6,0,20,0"
+                               Foreground="{StaticResource FailedStatusBrush}" />
+                </StackPanel>
+
+                <TextBlock Text="{Binding TotalsCaveat}" Foreground="{StaticResource FailedStatusBrush}"
+                           Margin="0,6,0,0" TextWrapping="Wrap">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding TotalsCaveat}" Value="">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+
+                <TextBlock Text="{Binding StatusMessage}" Margin="0,6,0,0" TextWrapping="Wrap"
+                           Foreground="{StaticResource MutedBrush}" />
+            </StackPanel>
+        </Border>
+
+        <!-- Right: the selected puzzle -->
+        <Border DockPanel.Dock="Right" Margin="12,0,0,0">
+            <views:SudokuGridView DataContext="{Binding Grid}" VerticalAlignment="Top" />
+        </Border>
+
+        <!-- Centre: the comparison table -->
+        <DataGrid ItemsSource="{Binding Rows}" SelectedItem="{Binding SelectedRow}"
+                  AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single"
+                  CanUserAddRows="False" HeadersVisibility="Column"
+                  GridLinesVisibility="Horizontal" EnableRowVirtualization="True"
+                  RowHeaderWidth="0">
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <Setter Property="ToolTip" Value="{Binding Error}" />
+                </Style>
+            </DataGrid.RowStyle>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Grid" Binding="{Binding PuzzleId, StringFormat={}{0:D2}}" Width="55" />
+
+                <DataGridTemplateColumn Header="Backtracking" Width="110">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Style="{StaticResource NumericCellStyle}"
+                                       Text="{Binding BackTrackingMilliseconds, StringFormat={}{0:N2} ms, TargetNullValue=—}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Header="Status" Width="80">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding BackTrackingStatus}" Style="{StaticResource StatusTextStyle}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Header="Constraint" Width="110">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Style="{StaticResource NumericCellStyle}"
+                                       Text="{Binding ConstraintMilliseconds, StringFormat={}{0:N2} ms, TargetNullValue=—}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Header="Status" Width="80">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding ConstraintStatus}" Style="{StaticResource StatusTextStyle}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTextColumn Header="Faster" Binding="{Binding FasterSolver}" Width="110" />
+
+                <DataGridTemplateColumn Header="Speedup" Width="*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Style="{StaticResource NumericCellStyle}"
+                                       HorizontalAlignment="Left"
+                                       Text="{Binding Speedup, StringFormat={}{0:N2}×, TargetNullValue=—}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
+</Window>
