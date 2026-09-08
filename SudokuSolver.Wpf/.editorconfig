@@ -1,0 +1,6 @@
+# Scoped to SudokuSolver.Wpf so the solution-level .editorconfig stays untouched.
+# StyleCop.Analyzers 1.1.118 predates C# records: it reads a positional record's parameters as
+# ordinary method parameters and demands camelCase, but they are the record's public properties
+# and must stay PascalCase.
+[*.cs]
+dotnet_diagnostic.SA1313.severity = none
